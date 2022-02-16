@@ -1,0 +1,17 @@
+{
+  "name": "@smartmirror.one/frontend",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "parcel",
+    "build": "parcel build"
+  },
+  "dependencies": {
+    "lit": "^2.1.3"
+  },
+  "devDependencies": {
+    "@smartmirror.one/types": "",
+    "@parcel/transformer-typescript-tsc": "^2.3.1",
+    "parcel": "^2.3.1"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "smartmirror.one",
+  "workspaces": [
+    "packages/*"
+  ]
+}
