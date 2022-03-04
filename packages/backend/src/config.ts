@@ -4,6 +4,7 @@ import { load, dump } from 'js-yaml';
 import { homedir } from 'os';
 import { join } from 'path';
 import { exit } from 'process';
+import ms from 'ms';
 import {
   BoardSetup,
   PluginDefinition,
@@ -85,6 +86,10 @@ const parsePlugins = async ({
       widget.frontend = await getJavascript(join(frontendFolder, 'events'));
       widget.backend = require(join(widgetFolder, 'backend.js'));
 
+      if (widget.refreshRate) {
+        widget.refreshRate = ms(widget.refreshRate.toString());
+      }
+
       plugins.push(manifest);
     }
   }
@@ -111,6 +116,14 @@ const filterWidgets = ({ item, plugins }: { item: WidgetConfig, plugins: PluginD
   return false;
 };
 
+const standardizeWidget = (widget: WidgetConfig): WidgetConfig => {
+  widget.id = widget.id || randomUUID();
+  if (widget.refreshRate) {
+    widget.refreshRate = ms(widget.refreshRate.toString());
+  }
+  return widget;
+};
+
 export const getConfig = async (): Promise<Config> => {
   try {
     const rootFolder = join(homedir(), '.smartmirror');
@@ -126,10 +139,7 @@ export const getConfig = async (): Promise<Config> => {
         testMode: false,
         ...content.boardSetup,
       },
-      widgets: (content.widgets || []).map(el => {
-        el.id = el.id || randomUUID();
-        return el;
-      }),
+      widgets: (content.widgets || []).map(standardizeWidget),
     };
     const newYaml = dump(content);
     await writeFile(contentLocation, newYaml);

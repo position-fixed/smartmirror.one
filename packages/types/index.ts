@@ -18,6 +18,7 @@ export interface Position {
 }
 
 export type WidgetDefinition = {
+  refreshRate?: string | number;
   html: string[];
   css: string[];
   frontend: Record<string, string>;
