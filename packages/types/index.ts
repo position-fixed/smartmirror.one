@@ -17,13 +17,39 @@ export interface Position {
   height: number;
 }
 
-export type MirrorElement = {
+export type WidgetDefinition = {
+  html: string[];
+  css: string[];
+  frontend: Record<string, string>;
+  backend: unknown;
+  variables: {
+    name: string;
+    type: 'string' | 'number' | 'boolean';
+  }[];
+};
+
+export type PluginDefinition = {
+  name: string;
+  author: string;
+  email: string;
+  widgets: Record<string, WidgetDefinition>;
+};
+
+export type WidgetConfig = {
+  widget: string;
+  id: string;
   position: Position;
-  content: string;
+  inputs: Record<string, any>;
 }
 
-export type MirrorSetup = {
+export type BoardSetup = {
   width: number;
   height: number;
   testMode: boolean;
+}
+
+export type MirrorSetup = {
+  boardSetup: BoardSetup;
+  widgets: WidgetConfig[];
+  plugins: PluginDefinition[];
 }

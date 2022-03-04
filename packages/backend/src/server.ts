@@ -2,6 +2,7 @@ import { createServer, Server as HttpServer } from 'http';
 import { join } from 'path';
 import { Server as FileServer } from 'node-static';
 import { WebSocketServer, WebSocket } from 'ws';
+import { MirrorSetup, Server2Client } from '@smartmirror.one/types';
 import type { IncomingMessage, ServerResponse } from 'http';
 
 import { Config } from './config';
@@ -35,12 +36,12 @@ export class Server {
     switch (action) {
       case 'requestSetup':
         conn.send(JSON.stringify({
-          action: 'setup',
-          payload: this.config.boardSetup,
-        }));
-        conn.send(JSON.stringify({
-          action: 'elementUpdate',
-          payload: this.config.elements,
+          action: Server2Client.setup,
+          payload: {
+            boardSetup: this.config.boardSetup,
+            widgets: this.config.widgets,
+            plugins: this.config.plugins,
+          } as MirrorSetup,
         }));
     }
   }
