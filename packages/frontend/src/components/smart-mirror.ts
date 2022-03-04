@@ -50,10 +50,6 @@ class SmartMirror extends LitElement {
       Server2Client.setup,
       (ev: MirrorSetup) => this.handleSetup(ev),
     );
-    this.socket.addEventListener(
-      Server2Client.elementUpdate,
-      (ev: WidgetConfig[]) => this.handleWidgetUpdate(ev),
-    );
     super.connectedCallback();
   }
 
@@ -65,10 +61,6 @@ class SmartMirror extends LitElement {
     this.socket.removeEventListener(
       Server2Client.setup,
       (ev: MirrorSetup) => this.handleSetup(ev),
-    );
-    this.socket.removeEventListener(
-      Server2Client.elementUpdate,
-      (ev: WidgetConfig[]) => this.handleWidgetUpdate(ev),
     );
     super.disconnectedCallback();
   }
@@ -83,10 +75,6 @@ class SmartMirror extends LitElement {
     this.plugins = [...payload.plugins];
   }
 
-  handleWidgetUpdate(payload: WidgetConfig[]) {
-    this.widgets = [...payload];
-  }
-
   renderWidget(widgetConfig: WidgetConfig) {
     const styles = styleMap({
       'grid-column': `${widgetConfig.position.left} / span ${widgetConfig.position.width}`,
@@ -95,16 +83,20 @@ class SmartMirror extends LitElement {
     });
 
     const [reqPlugin, reqWidget] = widgetConfig.widget.split('.');
-    const foundPlugin = this.plugins.find(p => p.name === reqPlugin && p.widgets.hasOwnProperty(reqWidget));
-    const foundWidget = foundPlugin.widgets[reqWidget];
+    const pluginDef = this.plugins.find(p => p.name === reqPlugin && p.widgets.hasOwnProperty(reqWidget));
+    const widgetDef = pluginDef.widgets[reqWidget];
+    const refreshRate = widgetDef.refreshRate
+      ? +(widgetConfig.refreshRate || widgetDef.refreshRate)
+      : null;
 
     return html`
       <widget-wrapper
         element-id=${widgetConfig.id}
-        .css=${foundWidget.css}
-        .html=${foundWidget.html}
-        .js=${foundWidget.frontend}
+        .css=${widgetDef.css}
+        .html=${widgetDef.html}
+        .js=${widgetDef.frontend}
         .inputs=${widgetConfig.inputs}
+        .refreshRate=${refreshRate}
         style=${styles}>
       </widget-wrapper>
     `;

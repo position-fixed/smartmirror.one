@@ -1,10 +1,11 @@
 export enum Client2Server {
   requestSetup = 'requestSetup',
+  requestMethod = 'requestMethod',
 };
 export enum Server2Client {
   connect = 'connect',
   setup = 'setup',
-  elementUpdate = 'elementUpdate',
+  widgetUpdate = 'widgetUpdate',
 };
 
 export type ClientMessage = keyof typeof Client2Server;
@@ -22,7 +23,7 @@ export type WidgetDefinition = {
   html: string[];
   css: string[];
   frontend: Record<string, string>;
-  backend: unknown;
+  backend: Record<string, () => unknown>;
   variables: {
     name: string;
     type: 'string' | 'number' | 'boolean';
@@ -39,6 +40,7 @@ export type PluginDefinition = {
 export type WidgetConfig = {
   widget: string;
   id: string;
+  refreshRate?: string | number;
   position: Position;
   inputs: Record<string, any>;
 }

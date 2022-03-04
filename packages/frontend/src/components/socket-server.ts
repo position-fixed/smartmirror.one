@@ -23,6 +23,7 @@ export default class SocketServer {
     this.socket.addEventListener('open', () => this.handleSocketConn());
     this.socket.addEventListener('message', (ev) => this.handleSocketMsg(ev));
     this.socket.addEventListener('close', () => this.handleSocketClose());
+    window.addEventListener('requestMethod', (ev: CustomEvent) => this.handleMethodRequest(ev));
   }
 
   private handleSocketConn() {
@@ -32,12 +33,20 @@ export default class SocketServer {
 
   private handleSocketMsg(ev: MessageEvent) {
     const { action, payload } = JSON.parse(ev.data) as ServerMessage;
-    this.eventListeners[action].forEach(listener => listener(payload));
+    if (action === 'widgetUpdate') {
+      window.dispatchEvent(new CustomEvent('widgetUpdate', { detail: payload }));
+    } else {
+      this.eventListeners[action].forEach(listener => listener(payload));
+    }
   }
 
   private handleSocketClose() {
     console.log('Socket Closed, attempting reconnect');
     window.setTimeout(() => this.connectSocket(), 10000);
+  }
+
+  private handleMethodRequest(ev: CustomEvent) {
+    this.send('requestMethod', ev.detail);
   }
 
   send(action: keyof typeof Client2Server, payload?: Record<string, any>) {
