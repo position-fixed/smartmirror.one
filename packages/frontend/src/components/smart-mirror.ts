@@ -14,7 +14,7 @@ import SocketServer from './socket-server';
 import './widget-wrapper';
 
 @customElement('smart-mirror')
-class _SmartMirror extends LitElement {
+export class SmartMirror extends LitElement {
   @state() socket: SocketServer;
   @state() boardSetup: BoardSetup;
   @state() widgets: WidgetConfig[] = [];

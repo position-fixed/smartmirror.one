@@ -1,4 +1,4 @@
-import { customElement, property, queryAll } from 'lit/decorators';
+import { customElement, property, queryAll } from 'lit/decorators.js';
 import { html, LitElement } from 'lit';
 
 @customElement('widget-wrapper')
