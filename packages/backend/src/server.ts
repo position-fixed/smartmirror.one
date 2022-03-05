@@ -1,17 +1,21 @@
-import { createServer, Server as HttpServer } from 'http';
-import { join } from 'path';
 import { Server as FileServer } from 'node-static';
-import { WebSocketServer, WebSocket } from 'ws';
+import { join } from 'path';
 import {
   Client2Server,
   MirrorSetup,
   Server2Client,
 } from '@smartmirror.one/types';
-import type { IncomingMessage, ServerResponse } from 'http';
+import {
+  createServer,
+  Server as HttpServer,
+  IncomingMessage,
+  ServerResponse,
+} from 'http';
+import { WebSocket, WebSocketServer } from 'ws';
 
 import { Config } from './config';
 
-type ClientMessage = { action: Client2Server, payload: Record<string, any> };
+type ClientMessage = { action: Client2Server, payload: Record<string, unknown> };
 
 export class Server {
   private httpServer: HttpServer;
@@ -28,7 +32,7 @@ export class Server {
     this.socketServer.on('connection', (conn) => this.connectHandlers(conn));
 
     this.httpServer.listen(config.port);
-    console.log(`Server is online!`);
+    console.log('Server is online!');
   }
 
   private connectHandlers(conn: WebSocket) {
@@ -38,22 +42,22 @@ export class Server {
   private handleMessage(conn: WebSocket, msg: string) {
     const { action, payload } = JSON.parse(msg) as ClientMessage;
     switch (action) {
-      case Client2Server.requestSetup:
-        conn.send(JSON.stringify({
-          action: Server2Client.setup,
-          payload: {
-            boardSetup: this.config.boardSetup,
-            widgets: this.config.widgets,
-            plugins: this.config.plugins,
-          } as MirrorSetup,
-        }));
+    case Client2Server.requestSetup:
+      conn.send(JSON.stringify({
+        action: Server2Client.setup,
+        payload: {
+          boardSetup: this.config.boardSetup,
+          plugins: this.config.plugins,
+          widgets: this.config.widgets,
+        } as MirrorSetup,
+      }));
       break;
-      case Client2Server.requestMethod:
-        this.executePluginMethod({
-          conn,
-          widgetId: payload.id,
-          methodName: payload.method,
-        });
+    case Client2Server.requestMethod:
+      this.executePluginMethod({
+        conn,
+        methodName: payload.method as string,
+        widgetId: payload.id as string,
+      });
       break;
     }
   }
@@ -65,15 +69,15 @@ export class Server {
   }: { conn: WebSocket, widgetId: string, methodName: string }) {
     const widgetConfig = this.config.widgets.find(w => w.id === widgetId);
     if (widgetConfig) {
-      const [plugin, widget] = widgetConfig.widget.split('.');
+      const [ plugin, widget ] = widgetConfig.widget.split('.');
       const methods = this.config.plugins.find(p => p.name === plugin)?.widgets[widget].backend;
-      if (methods && methods.hasOwnProperty(methodName)) {
+      if (methods && Object.prototype.hasOwnProperty.call(methods, methodName)) {
         conn.send(JSON.stringify({
           action: Server2Client.widgetUpdate,
           payload: {
             id: widgetId,
             update: methods[methodName](),
-          }
+          },
         }));
       }
     }
@@ -82,7 +86,7 @@ export class Server {
   private async fileListener(req: IncomingMessage, res: ServerResponse) {
     req.addListener('end', () => {
       this.fileServer.serve(req, res).addListener('error', (err) => {
-        console.error("Error serving " + req.url + " - " + err.message);
+        console.error('Error serving ' + req.url + ' - ' + err.message);
       });
     });
     req.resume();

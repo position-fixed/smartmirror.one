@@ -1,6 +1,7 @@
-import { LitElement, css, html } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { css, html, LitElement } from 'lit';
+import { customElement, state } from 'lit/decorators.js';
+
 import {
   BoardSetup,
   MirrorSetup,
@@ -13,7 +14,7 @@ import SocketServer from './socket-server';
 import './widget-wrapper';
 
 @customElement('smart-mirror')
-class SmartMirror extends LitElement {
+class _SmartMirror extends LitElement {
   @state() socket: SocketServer;
   @state() boardSetup: BoardSetup;
   @state() widgets: WidgetConfig[] = [];
@@ -37,7 +38,7 @@ class SmartMirror extends LitElement {
       height: 100%;
       grid-template-columns: repeat(var(--width), 1fr);
       grid-template-rows: repeat(var(--height), 1fr);
-    }`
+    }`,
   ];
 
   connectedCallback(): void {
@@ -70,20 +71,22 @@ class SmartMirror extends LitElement {
   }
 
   handleSetup(payload: MirrorSetup) {
-    this.boardSetup = {...payload.boardSetup};
-    this.widgets = [...payload.widgets];
-    this.plugins = [...payload.plugins];
+    this.boardSetup = { ...payload.boardSetup };
+    this.widgets = [ ...payload.widgets ];
+    this.plugins = [ ...payload.plugins ];
   }
 
   renderWidget(widgetConfig: WidgetConfig) {
     const styles = styleMap({
+      border: this.boardSetup.testMode ? '1px solid var(--fg)' : null,
       'grid-column': `${widgetConfig.position.left} / span ${widgetConfig.position.width}`,
       'grid-row': `${widgetConfig.position.top} / span ${widgetConfig.position.height}`,
-      border: this.boardSetup.testMode ? '1px solid var(--fg)' : null,
     });
 
-    const [reqPlugin, reqWidget] = widgetConfig.widget.split('.');
-    const pluginDef = this.plugins.find(p => p.name === reqPlugin && p.widgets.hasOwnProperty(reqWidget));
+    const [ reqPlugin, reqWidget ] = widgetConfig.widget.split('.');
+    const pluginDef = this.plugins.find(
+      p => p.name === reqPlugin && Object.prototype.hasOwnProperty.call(p.widgets, reqWidget),
+    );
     const widgetDef = pluginDef.widgets[reqWidget];
     const refreshRate = widgetDef.refreshRate
       ? +(widgetConfig.refreshRate || widgetDef.refreshRate)

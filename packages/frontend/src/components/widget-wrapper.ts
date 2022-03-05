@@ -1,9 +1,9 @@
-import { LitElement, html } from 'lit';
 import { customElement, property, queryAll } from 'lit/decorators';
+import { html, LitElement } from 'lit';
 
 @customElement('widget-wrapper')
-class WidgetWrapper extends LitElement {
-  @property({ attribute: 'element-id'}) elementId: string;
+class _WidgetWrapper extends LitElement {
+  @property({ attribute: 'element-id' }) elementId: string;
 
   @property({ type: Array }) css: string[];
   @property({ type: Array }) html: string[];
@@ -22,7 +22,10 @@ class WidgetWrapper extends LitElement {
   protected firstUpdated(): void {
     this.executeFunction('start');
     if (this.refreshRate) {
-      this.interval = window.setInterval(() => this.requestWidgetMethod('update'), this.refreshRate);
+      this.interval = window.setInterval(
+        () => this.requestWidgetMethod('update'),
+        this.refreshRate,
+      );
     }
   }
 
@@ -39,7 +42,7 @@ class WidgetWrapper extends LitElement {
       detail: {
         id: this.elementId,
         method,
-      }
+      },
     }));
   }
 
@@ -49,7 +52,7 @@ class WidgetWrapper extends LitElement {
     }
   }
 
-  executeFunction(name: string, update: any = null) {
+  executeFunction(name: string, update: unknown = null) {
     const targetFunction = this.js[name];
 
     const context = {
@@ -69,11 +72,11 @@ class WidgetWrapper extends LitElement {
   render() {
     return html`
     <div .innerHTML=${[
-      ...this.css.map(style => `<style>${style}</style>`),
-      ...this.html,
-      ].join('')}>
+    ...this.css.map(style => `<style>${style}</style>`),
+    ...this.html,
+  ].join('')}>
       
     </div>
-    `
+    `;
   }
 }

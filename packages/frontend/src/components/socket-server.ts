@@ -2,10 +2,10 @@ import type { Client2Server, Server2Client } from '@smartmirror.one/types';
 
 type ServerMessage = {
   action: keyof typeof Server2Client,
-  payload: Record<string, any>
+  payload: Record<string, unknown>
 };
 
-type Listener = (payload?: Record<string, any>) => void;
+type Listener = (payload?: Record<string, unknown>) => void;
 
 export default class SocketServer {
   private server: string;
@@ -49,7 +49,7 @@ export default class SocketServer {
     this.send('requestMethod', ev.detail);
   }
 
-  send(action: keyof typeof Client2Server, payload?: Record<string, any>) {
+  send(action: keyof typeof Client2Server, payload?: Record<string, unknown>) {
     this.socket.send(JSON.stringify({
       action,
       payload,
@@ -64,11 +64,11 @@ export default class SocketServer {
   }
 
   removeEventListener(event: keyof typeof Server2Client, listener: Listener) {
-    const index = (this.eventListeners[event] || []).findIndex(listener);
+    const index = (this.eventListeners[event] || []).findIndex(item => item === listener);
     if (index !== -1) {
-      const otherListeners = [...this.eventListeners[event]];
+      const otherListeners = [ ...this.eventListeners[event] ];
       otherListeners.splice(index, 1);
-      this.eventListeners[event] = [...otherListeners];
+      this.eventListeners[event] = [ ...otherListeners ];
     }
   }
 }

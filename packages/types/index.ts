@@ -1,12 +1,13 @@
 export enum Client2Server {
   requestSetup = 'requestSetup',
   requestMethod = 'requestMethod',
-};
+}
+
 export enum Server2Client {
   connect = 'connect',
   setup = 'setup',
   widgetUpdate = 'widgetUpdate',
-};
+}
 
 export type ClientMessage = keyof typeof Client2Server;
 export type ServerMessage = keyof typeof Server2Client;
@@ -42,7 +43,7 @@ export type WidgetConfig = {
   id: string;
   refreshRate?: string | number;
   position: Position;
-  inputs: Record<string, any>;
+  inputs: Record<string, unknown>;
 }
 
 export type BoardSetup = {
