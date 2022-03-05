@@ -1,6 +1,9 @@
 {
   "name": "@smartmirror.one/types",
   "source": "index.ts",
+  "scripts": {
+    "lint": "eslint *.ts"
+  },
   "dependencies": {},
   "devDependencies": {}
 }

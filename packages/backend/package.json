@@ -4,6 +4,7 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "ts-node-dev src",
+    "lint": "eslint src",
     "build": "tsc"
   },
   "dependencies": {

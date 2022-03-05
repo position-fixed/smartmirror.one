@@ -4,6 +4,7 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "parcel",
+    "lint": "eslint src/**/*.ts",
     "build": "parcel build"
   },
   "dependencies": {
