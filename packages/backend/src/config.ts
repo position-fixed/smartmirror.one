@@ -120,7 +120,7 @@ const filterWidgets = ({
   return false;
 };
 
-const standardizeWidget = (widget: WidgetConfig): WidgetConfig => {
+export const standardizeWidget = (widget: WidgetConfig): WidgetConfig => {
   widget.id = widget.id || randomUUID();
   if (widget.refreshRate) {
     widget.refreshRate = ms(widget.refreshRate.toString());

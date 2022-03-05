@@ -18,7 +18,7 @@
     "@smartmirror.one/types": "",
     "@web/dev-server-esbuild": "^0.2.16",
     "@web/test-runner": "^0.13.27",
-     "@web/test-runner-playwright": "^0.8.8",
+    "@web/test-runner-playwright": "^0.8.8",
     "parcel": "^2.3.1"
   }
 }
