@@ -6,7 +6,9 @@
     "dev": "parcel",
     "lint": "eslint src/**/*.ts",
     "test": "wtr test/**/*.test.ts --node-resolve --playwright --browsers chromium",
-    "build": "parcel build"
+    "clean": "rm -rf dist",
+    "package": "node ./build/package.js",
+    "build": "npm run clean && parcel build && npm run package"
   },
   "dependencies": {
     "lit": "^2.1.3"
