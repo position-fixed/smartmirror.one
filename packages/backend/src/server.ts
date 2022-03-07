@@ -41,7 +41,7 @@ export class Server {
     this.socketServer.on('connection', (conn) => this.connectHandlers(conn));
 
     this.httpServer.listen(config.port);
-    console.log('Server is online!');
+    console.log(`Server is online at http://localhost:${config.port}`);
   }
 
   private connectHandlers(conn: WebSocket) {

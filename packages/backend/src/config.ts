@@ -128,13 +128,34 @@ export const standardizeWidget = (widget: WidgetConfig): WidgetConfig => {
   return widget;
 };
 
+const exampleWidget: WidgetConfig = {
+  id: randomUUID(),
+  widget: 'plugin-greeting.default',
+  position: {
+    width: 10,
+    height: 2,
+    top: 5,
+    left: 5,
+  },
+  inputs: {
+    displayName: 'there',
+  },
+};
+
 export const getConfig = async (): Promise<Config> => {
   try {
     const rootFolder = join(homedir(), '.smartmirror');
     const contentLocation = join(rootFolder, 'config.yml');
-    const contentFile = await readFile(contentLocation, 'utf-8');
-    const content = load(contentFile) as Partial<LoadedConfig>;
-    const newContent: LoadedConfig = {
+
+    let content: Partial<LoadedConfig>;
+    try {
+      const contentFile = await readFile(contentLocation, 'utf-8');
+      content = load(contentFile) as Partial<LoadedConfig>;
+    } catch (e) {
+      content = {};
+    }
+
+    const checkedConfig: Omit<LoadedConfig, 'rootFolder'> = {
       boardSetup: {
         height: 10,
         testMode: false,
@@ -143,22 +164,24 @@ export const getConfig = async (): Promise<Config> => {
       },
 
       port: content.port || 3000,
-      rootFolder,
-      widgets: (content.widgets || []).map(standardizeWidget),
+      widgets: (content.widgets || [exampleWidget]).map(standardizeWidget),
     };
-    const newYaml = dump(content);
+
+    const newYaml = dump(checkedConfig);
     await writeFile(contentLocation, newYaml);
 
-    const pluginReferences: string[] = newContent.widgets.reduce((list, item) => {
+    const pluginReferences: string[] = checkedConfig.widgets.reduce((list, item) => {
       const plugin = item.widget.split('.')[0];
       return list.includes(plugin) ? list : [ ...list, plugin ];
     }, [] as string[]);
 
     const plugins = await parsePlugins({ rootFolder, pluginReferences });
-    const checkedWidgets = newContent.widgets.filter(item => filterWidgets({ item, plugins }));
+    const checkedWidgets = checkedConfig.widgets
+      .filter(item => filterWidgets({ item, plugins }));
 
     const config: Config = {
-      ...newContent,
+      ...checkedConfig,
+      rootFolder,
       plugins,
       widgets: checkedWidgets,
     };
