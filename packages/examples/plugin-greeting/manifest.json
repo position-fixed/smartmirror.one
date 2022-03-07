@@ -1,5 +1,5 @@
 {
-  "name": "example-plugin-greeting",
+  "name": "plugin-greeting",
   "author": "A Plugin Author",
   "email": "plugins@smartmirror.one",
   "widgets": {
