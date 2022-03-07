@@ -1,6 +1,4 @@
-import { Server as FileServer } from 'node-static';
-import { join } from 'path';
-import {
+import type {
   Client2Server,
   MirrorSetup,
   Server2Client,
@@ -15,17 +13,28 @@ import { WebSocket, WebSocketServer } from 'ws';
 
 import { Config } from './config';
 
-type ClientMessage = { action: Client2Server, payload: Record<string, unknown> };
+type ClientMessage = {
+  action: keyof typeof Client2Server,
+  payload: Record<string, unknown>,
+};
+
+type SendToFrontendProps = {
+  action: keyof typeof Server2Client,
+  conn: WebSocket,
+  payload: Record<string, unknown>,
+};
 
 export class Server {
+  private mirrorIndex: string;
   private httpServer: HttpServer;
-  private fileServer: FileServer;
   private socketServer: WebSocketServer;
   private config: Config;
 
   constructor(config: Config) {
-    this.fileServer = new FileServer(join(__dirname, '../_public'));
-    this.httpServer = createServer(this.fileListener);
+    const mirrorIndex = Buffer.from(require('../_public/index.js'), 'base64');
+    this.mirrorIndex = mirrorIndex.toString('utf-8');
+
+    this.httpServer = createServer((req, res) => this.fileListener(req, res));
     this.socketServer = new WebSocketServer({ server: this.httpServer });
     this.config = config;
 
@@ -42,9 +51,9 @@ export class Server {
   private handleMessage(conn: WebSocket, msg: string) {
     const { action, payload } = JSON.parse(msg) as ClientMessage;
     switch (action) {
-    case Client2Server.requestSetup:
+    case 'requestSetup':
       conn.send(JSON.stringify({
-        action: Server2Client.setup,
+        action: 'setup',
         payload: {
           boardSetup: this.config.boardSetup,
           plugins: this.config.plugins,
@@ -52,7 +61,7 @@ export class Server {
         } as MirrorSetup,
       }));
       break;
-    case Client2Server.requestMethod:
+    case 'requestMethod':
       this.executePluginMethod({
         conn,
         methodName: payload.method as string,
@@ -72,22 +81,31 @@ export class Server {
       const [ plugin, widget ] = widgetConfig.widget.split('.');
       const methods = this.config.plugins.find(p => p.name === plugin)?.widgets[widget].backend;
       if (methods && Object.prototype.hasOwnProperty.call(methods, methodName)) {
-        conn.send(JSON.stringify({
-          action: Server2Client.widgetUpdate,
+        this.sendToFrontend({
+          action: 'widgetUpdate',
+          conn,
           payload: {
             id: widgetId,
             update: methods[methodName](),
           },
-        }));
+        });
       }
     }
   }
 
+  private sendToFrontend({
+    action,
+    conn,
+    payload,
+  }: SendToFrontendProps) {
+    conn.send(
+      JSON.stringify({ action, payload }),
+    );
+  }
+
   private async fileListener(req: IncomingMessage, res: ServerResponse) {
     req.addListener('end', () => {
-      this.fileServer.serve(req, res).addListener('error', (err) => {
-        console.error('Error serving ' + req.url + ' - ' + err.message);
-      });
+      res.end(this.mirrorIndex);
     });
     req.resume();
   }
