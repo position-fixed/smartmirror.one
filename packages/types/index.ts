@@ -19,16 +19,18 @@ export interface Position {
   height: number;
 }
 
+export type WidgetVariables = {
+  name: string;
+  type: 'string' | 'number' | 'boolean';
+};
+
 export type WidgetDefinition = {
   refreshRate?: string | number;
   html: string[];
   css: string[];
   frontend: Record<string, string>;
   backend: Record<string, () => unknown>;
-  variables: {
-    name: string;
-    type: 'string' | 'number' | 'boolean';
-  }[];
+  variables: WidgetVariables[];
 };
 
 export type PluginDefinition = {

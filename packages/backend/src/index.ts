@@ -1,7 +1,7 @@
 import { getConfig } from './config';
-import { Server } from './server';
+import { startMirrorServer } from './mirror-server';
 
 (async () => {
   const config = await getConfig();
-  new Server(config);
+  await startMirrorServer(config);
 })();

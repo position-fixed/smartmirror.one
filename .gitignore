@@ -1,9 +1,17 @@
+# Local files
 .vscode
-.parcel-cache
+.config
 node_modules
-dist
 *.env
 *.log
-config
+
+# Build Artifactos
+.parcel-cache
 _public
-packages
+_bins
+coverage
+dist
+*.zip
+
+# MacOS
+.DS_Store
