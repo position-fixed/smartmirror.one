@@ -11,7 +11,7 @@ import {
 
 import { defaultWidget } from './defaults';
 import { getConfigFile } from './fileHandling';
-import { getJavascript, getFileContents } from './fileHandling';
+import { getFileContents, getJavascript } from './fileHandling';
 import { LoadedConfig, ManifestContent } from '../types';
 
 type ConfigWithoutRoot = Omit<LoadedConfig, 'rootFolder'>;
@@ -37,22 +37,22 @@ export const collectPluginFiles = async ({
 
     checkManifestRequirements({ manifest, plugin: pluginRef });
 
-    const plugin: PluginDefinition = { ...manifest, widgets: {} };
+    const plugin: PluginDefinition = { ...manifest, widgets: {}};
     for (const [ key, entry ] of Object.entries(manifest.widgets)) {
       const widgetFolder = join(pluginFolder, key);
       const frontendFolder = join(widgetFolder, 'frontend');
       const widget: WidgetDefinition = {
         ...manifest.widgets[key],
+        backend: require(join(widgetFolder, 'backend.js')),
         css: await getFileContents({
           rootFolder: frontendFolder,
           filenames: entry.css,
         }),
-        html: await getFileContents({
-          rootFolder: frontendFolder,
-          filenames: entry.html,
-        }),
         frontend: await getJavascript(join(frontendFolder, 'events')),
-        backend: require(join(widgetFolder, 'backend.js')),
+        html: await getFileContents({
+          filenames: entry.html,
+          rootFolder: frontendFolder,
+        }),
       };
 
       if (widget.refreshRate) {
@@ -81,7 +81,7 @@ export const checkManifestRequirements = ({
       throw new Error(`Property ${key} missing in ${plugin} manifest!`);
     }
   });
-}
+};
 
 interface WidgetFilterProps {
   item: WidgetConfig,
@@ -130,7 +130,7 @@ export const parseConfig = async (contentLocation: string): Promise<ConfigWithou
     },
 
     port: content?.port || 3000,
-    widgets: (content?.widgets || [defaultWidget]).map(standardizeWidget),
+    widgets: (content?.widgets || [ defaultWidget ]).map(standardizeWidget),
   };
 
   return checkedConfig;

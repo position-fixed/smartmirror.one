@@ -1,12 +1,12 @@
+import * as sendToFrontend from '../sendToFrontend';
 import { handleMessage } from '../socketHandling';
 import { Config, GlobalTest } from '../../types';
-import * as sendToFrontend from '../sendToFrontend';
 
 describe.only('handleMessage', () => {
   const testFn = jest.fn();
   const send = jest.fn();
   const exampleConfig: Config = (globalThis as unknown as GlobalTest)
-    .getConfig({ backend: { testFn } });
+    .getConfig({ backend: { testFn }});
   const spy = jest.spyOn(sendToFrontend, 'sendToFrontend');
 
   it('handles requestSetup', () => {
@@ -30,11 +30,11 @@ describe.only('handleMessage', () => {
         payload: {
           id: 'example-widget',
           method: 'testFn',
-        }
+        },
       }),
       // @ts-ignore next-line
       socket: { send },
     });
     expect(testFn).toHaveBeenCalledTimes(1);
-  })
+  });
 });

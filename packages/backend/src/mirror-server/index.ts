@@ -1,8 +1,8 @@
+import { WebSocketServer } from 'ws';
 import {
   createServer,
   Server as HttpServer,
 } from 'http';
-import { WebSocketServer } from 'ws';
 
 import { Config } from '../types';
 import { connectHandlers } from './socketHandling';

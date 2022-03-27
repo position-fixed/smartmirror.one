@@ -43,4 +43,4 @@ export const getConfigFile = async (configLocation: string): Promise<Partial<Loa
   }
 
   return content;
-}
+};

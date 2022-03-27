@@ -15,18 +15,18 @@ jest.mock('process');
 
 describe('standardizeWidget', () => {
   const testWidget: Omit<WidgetConfig, 'id'> = {
-    widget: 'widget',
-    position: {
-      top: 0,
-      left: 0,
-      width: 0,
-      height: 0,
-    },
     inputs: {},
+    position: {
+      height: 0,
+      left: 0,
+      top: 0,
+      width: 0,
+    },
+    widget: 'widget',
   };
 
   it('adds an id if none exists', () => {
-    const input: Omit<WidgetConfig, 'id'> = {...testWidget};
+    const input: Omit<WidgetConfig, 'id'> = { ...testWidget };
     const output = standardizeWidget(input as WidgetConfig);
     expect(output.id).toMatch(/\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/);
   });
@@ -61,7 +61,7 @@ describe('dedupeWidgets', () => {
     }, {
       widget: 'alpha.two',
     }, {
-      widget: 'beta.one'
+      widget: 'beta.one',
     }];
     const expected = [ 'foo', 'alpha', 'beta' ];
     const results = (input as WidgetConfig[]).reduce(dedupeWidgets, []);
@@ -72,28 +72,28 @@ describe('dedupeWidgets', () => {
 describe('widgetFilter', () => {
   const exampleWidget: WidgetConfig = {
     id: 'example-widget',
-    widget: 'foo.bar',
-    position: {
-      top: 0,
-      left: 0,
-      width: 1,
-      height: 1,
-    },
     inputs: {
       exampleInput: 'Hello!',
     },
+    position: {
+      height: 1,
+      left: 0,
+      top: 0,
+      width: 1,
+    },
+    widget: 'foo.bar',
   };
 
   const examplePlugin: PluginDefinition = {
-    name: 'foo',
     author: '',
     email: '',
+    name: 'foo',
     widgets: {
       bar: {
-        html: [],
+        backend: {},
         css: [],
         frontend: {},
-        backend: {},
+        html: [],
         variables: [{
           name: 'exampleInput',
           type: 'string',
@@ -109,83 +109,83 @@ describe('widgetFilter', () => {
         fooInput: 'Nope!',
       },
     };
-    const result = [malformedWidget].filter(item => widgetFilter({
+    const result = [ malformedWidget ].filter(item => widgetFilter({
       item,
-      plugins: [examplePlugin],
+      plugins: [ examplePlugin ],
     }));
     expect(result).toEqual([]);
   });
-  
+
   it('drops widget definitions that reference unknown plugins', () => {
     const malformedWidget = {
       ...exampleWidget,
       widget: 'bar.foo',
     };
-    const result = [malformedWidget].filter(item => widgetFilter({
+    const result = [ malformedWidget ].filter(item => widgetFilter({
       item,
-      plugins: [examplePlugin],
+      plugins: [ examplePlugin ],
     }));
     expect(result).toEqual([]);
   });
-  
+
   it('leaves correct widget definitions alone', () => {
-    const result = [exampleWidget].filter(item => widgetFilter({
+    const result = [ exampleWidget ].filter(item => widgetFilter({
       item,
-      plugins: [examplePlugin],
+      plugins: [ examplePlugin ],
     }));
-    expect(result).toEqual(expect.arrayContaining([exampleWidget]));
+    expect(result).toEqual(expect.arrayContaining([ exampleWidget ]));
   });
 });
 
 describe('collectPluginFiles', () => {
   const manifest = {
-    name: 'plugin',
     author: 'A Plugin Author',
     email: 'plugins@smartmirror.one',
+    name: 'plugin',
     widgets: {
       foo: {
-        html: ['index.html'],
-        css: ['style.css'],
-        variables: [],
+        css: [ 'style.css' ],
+        html: [ 'index.html' ],
         refreshRate: '5m',
-      }
-    }
+        variables: [],
+      },
+    },
   };
 
   const mockFiles = {
-    'test/plugin/manifest.json': JSON.stringify(manifest),
     'test/plugin/foo/backend.js': '/* JS */',
+    'test/plugin/foo/frontend/events/start.js': '/* JS */',
     'test/plugin/foo/frontend/index.html': '/* HTML */',
     'test/plugin/foo/frontend/style.css': '/* CSS */',
-    'test/plugin/foo/frontend/events/start.js': '/* JS */',
+    'test/plugin/manifest.json': JSON.stringify(manifest),
   };
 
   beforeAll(() => {
     require('fs/promises').__setMockFiles(mockFiles);
 
     jest.doMock('test/plugin/foo/backend.js', () => {
-      return { beforeLoad(){} };
+      return { beforeLoad: jest.fn() };
     }, { virtual: true });
   });
 
   it('collects all files referenced in the plugin manifest', async () => {
     const result = await collectPluginFiles({
       rootFolder: 'test',
-      pluginReferences: ['plugin'],
+      pluginReferences: [ 'plugin' ],
     });
 
     const expected: PluginDefinition = {
       ...manifest,
       widgets: {
         foo: {
-          html: ['/* HTML */'],
-          css: ['/* CSS */'],
           backend: {
             beforeLoad: expect.any(Function),
           },
+          css: [ '/* CSS */' ],
           frontend: {
             start: '/* JS */',
           },
+          html: [ '/* HTML */' ],
           variables: [],
         },
       },
@@ -197,8 +197,8 @@ describe('collectPluginFiles', () => {
   it('throws an error when a file cannot be found', async () => {
     expect(async () => {
       await collectPluginFiles({
+        pluginReferences: [ 'noPlugin' ],
         rootFolder: 'test',
-        pluginReferences: ['noPlugin'],
       });
     }).rejects.toThrow('No such file');
   });
@@ -206,7 +206,7 @@ describe('collectPluginFiles', () => {
   it('parsed refreshRate to a number', async () => {
     const result = await collectPluginFiles({
       rootFolder: 'test',
-      pluginReferences: ['plugin'],
+      pluginReferences: [ 'plugin' ],
     });
     expect(result[0].widgets['foo'].refreshRate).toEqual(300000);
   });
@@ -214,21 +214,21 @@ describe('collectPluginFiles', () => {
 
 describe('checkManifestRequirements', () => {
   const manifest: ManifestContent = {
-    name: 'plugin',
     author: 'A Plugin Author',
     email: 'plugins@smartmirror.one',
+    name: 'plugin',
     widgets: {
       foo: {
-        html: ['index.html'],
-        css: ['style.css'],
-        variables: []
-      }
-    }
+        css: [ 'style.css' ],
+        html: [ 'index.html' ],
+        variables: [],
+      },
+    },
   };
 
   it('throws an error when one of the required keys is not found', async () => {
     for (const key of [ 'name', 'author', 'email' ]) {
-      const manifestCopy: Partial<ManifestContent> = {...manifest};
+      const manifestCopy: Partial<ManifestContent> = { ...manifest };
       // @ts-ignore:next-line
       delete manifestCopy[key];
       expect(() => checkManifestRequirements({
@@ -259,16 +259,16 @@ describe('parseConfig', () => {
       port: 3000,
       widgets: [{
         id: expect.any(String),
-        widget: 'plugin-greeting.default',
-        position: {
-          width: 10,
-          height: 2,
-          top: 5,
-          left: 5,
-        },
         inputs: {
           displayName: 'there',
         },
+        position: {
+          height: 2,
+          left: 5,
+          top: 5,
+          width: 10,
+        },
+        widget: 'plugin-greeting.default',
       }],
     };
     expect(result).toEqual(expected);

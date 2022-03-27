@@ -9,6 +9,6 @@ describe('sendToFrontend', () => {
       // @ts-ignore next-line
       socket: { send: socketSend },
     });
-    expect(socketSend).toBeCalledWith(`{"action":"connect","payload":{"foo":"bar"}}`);
+    expect(socketSend).toBeCalledWith('{"action":"connect","payload":{"foo":"bar"}}');
   });
 });

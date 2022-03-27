@@ -4,7 +4,7 @@ import { Config, GlobalTest } from '../../types';
 describe('executePluginMethod', () => {
   const exampleFunction = jest.fn();
   const exampleConfig: Config = (globalThis as unknown as GlobalTest)
-    .getConfig({ backend: { exampleFunction } });
+    .getConfig({ backend: { exampleFunction }});
 
   it('executes a requested method', () => {
     executePluginMethod({

@@ -1,16 +1,16 @@
+import { dump } from 'js-yaml';
 import { exit } from 'process';
 import { homedir } from 'os';
 import { join } from 'path';
-import { dump } from 'js-yaml';
 import { writeFile } from 'fs/promises';
 
+import { Config } from '../types';
 import {
   collectPluginFiles,
   dedupeWidgets,
   parseConfig,
-  widgetFilter
+  widgetFilter,
 } from './parsing';
-import { Config } from '../types';
 
 export const getConfig = async (): Promise<Config> => {
   try {
@@ -30,8 +30,8 @@ export const getConfig = async (): Promise<Config> => {
 
     const config: Config = {
       ...checkedConfig,
-      rootFolder,
       plugins,
+      rootFolder,
       widgets: checkedWidgets,
     };
 

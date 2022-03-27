@@ -5,8 +5,8 @@ import type {
 } from '@smartmirror.one/types';
 
 import { Config } from '../types';
-import { sendToFrontend } from './sendToFrontend';
 import { executePluginMethod } from './executePluginMethod';
+import { sendToFrontend } from './sendToFrontend';
 
 type ClientMessage = {
   action: keyof typeof Client2Server,

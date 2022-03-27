@@ -19,6 +19,8 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    '@typescript-eslint/ban-ts-comment': 0,
+    '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/no-unused-vars': [ 'error', {
       varsIgnorePattern: '^_',
     }],
@@ -43,6 +45,7 @@ module.exports = {
       ignoreRegExpLiterals: true,
       tabWidth: 2,
     }],
+    'no-case-declarations': 0,
     'no-trailing-spaces': 'error',
     'object-curly-spacing': [ 'error', 'always', {
       arraysInObjects: false,
