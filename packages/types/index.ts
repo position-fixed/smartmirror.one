@@ -29,7 +29,7 @@ export type WidgetDefinition = {
   html: string[];
   css: string[];
   frontend: Record<string, string>;
-  backend: Record<string, () => unknown>;
+  backend: Record<string, (data?: Record<string, unknown>) => Record<string, unknown>>;
   variables: WidgetVariables[];
 };
 
@@ -46,6 +46,7 @@ export type WidgetConfig = {
   refreshRate?: string | number;
   position: Position;
   inputs: Record<string, unknown>;
+  data: Record<string, unknown>;
 }
 
 export type BoardSetup = {

@@ -9,6 +9,7 @@ describe('executePluginMethod', () => {
   it('executes a requested method', () => {
     executePluginMethod({
       config: exampleConfig,
+      data: {},
       methodName: 'exampleFunction',
       widgetId: 'example-widget',
     });
@@ -18,6 +19,7 @@ describe('executePluginMethod', () => {
   it('returns null when the requested widget cannot be found', () => {
     const result = executePluginMethod({
       config: exampleConfig,
+      data: {},
       methodName: 'exampleFunction',
       widgetId: 'example-foo',
     });
@@ -27,6 +29,7 @@ describe('executePluginMethod', () => {
   it('returns null when the requested method cannot be found', () => {
     const result = executePluginMethod({
       config: exampleConfig,
+      data: {},
       methodName: 'wrongFunction',
       widgetId: 'example-widget',
     });

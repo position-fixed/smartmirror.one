@@ -1,3 +1,3 @@
 console.log('Plugin Update');
-const { elements, inputs, update } = context;
-elements['text'].innerText = `${update} ${inputs.displayName}.`;
+const { elements, inputs, data } = context;
+elements['text'].innerText = `${data.greeting} ${inputs.displayName}!`;

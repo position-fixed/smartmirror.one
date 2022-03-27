@@ -49,9 +49,11 @@ export const handleMessage = ({
     const widgetId = payload.id as string;
     const update = executePluginMethod({
       config,
+      data: payload.data as Record<string, unknown> || {},
       methodName: payload.method as string,
       widgetId,
     });
+
     sendToFrontend({
       action: 'widgetUpdate',
       payload: { id: widgetId, update },

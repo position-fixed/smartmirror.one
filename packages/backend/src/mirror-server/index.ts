@@ -6,6 +6,7 @@ import {
 
 import { Config } from '../types';
 import { connectHandlers } from './socketHandling';
+import { executePluginMethod } from './executePluginMethod';
 
 export const startMirrorServer = async (config: Config) => {
   const mirrorIndex: string = Buffer
@@ -15,6 +16,16 @@ export const startMirrorServer = async (config: Config) => {
     req.addListener('end', () => { res.end(mirrorIndex); });
     req.resume();
   });
+
+  for (const widget of config.widgets) {
+    const data = executePluginMethod({
+      config,
+      data: {},
+      methodName: 'init',
+      widgetId: widget.id,
+    });
+    widget.data = data || {};
+  }
 
   const socketServer = new WebSocketServer({ server: httpServer });
   socketServer.on('connection', (socket) => connectHandlers({ config, socket }));

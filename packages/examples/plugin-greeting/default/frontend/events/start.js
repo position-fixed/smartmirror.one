@@ -1,3 +1,3 @@
 console.log('Plugin Start');
-const { elements, inputs } = context;
-elements['text'].innerText = `Hello ${inputs.displayName}.`;
+const { elements, inputs, data } = context;
+elements['text'].innerText = `${data.greeting} ${inputs.displayName}.`;

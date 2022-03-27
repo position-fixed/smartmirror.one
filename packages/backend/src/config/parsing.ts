@@ -112,14 +112,25 @@ export const widgetFilter = ({
 };
 
 export const standardizeWidget = (widget: WidgetConfig): WidgetConfig => {
-  widget.id = widget.id || randomUUID();
+  const standardWidget: WidgetConfig = {
+    ...widget,
+    id: widget.id || randomUUID(),
+  };
+
   if (widget.refreshRate) {
-    widget.refreshRate = ms(widget.refreshRate.toString());
+    if (typeof widget.refreshRate === 'number') {
+      standardWidget.refreshRate = widget.refreshRate;
+    }
+    if (typeof widget.refreshRate === 'string') {
+      standardWidget.refreshRate = ms(widget.refreshRate.toString());
+    }
   }
-  return widget;
+
+  return standardWidget;
 };
 
 export const parseConfig = async (contentLocation: string): Promise<ConfigWithoutRoot> => {
+  const defaultWidgets = [ defaultWidget as WidgetConfig ];
   const content: Partial<LoadedConfig> = await getConfigFile(contentLocation);
   const checkedConfig:ConfigWithoutRoot = {
     boardSetup: {
@@ -128,9 +139,8 @@ export const parseConfig = async (contentLocation: string): Promise<ConfigWithou
       width: 10,
       ...(content?.boardSetup || {}),
     },
-
     port: content?.port || 3000,
-    widgets: (content?.widgets || [ defaultWidget ]).map(standardizeWidget),
+    widgets: (content?.widgets || defaultWidgets).map(standardizeWidget),
   };
 
   return checkedConfig;

@@ -95,6 +95,7 @@ export class SmartMirror extends LitElement {
     return html`
       <widget-wrapper
         element-id=${widgetConfig.id}
+        .data=${widgetConfig.data}
         .css=${widgetDef.css}
         .html=${widgetDef.html}
         .js=${widgetDef.frontend}

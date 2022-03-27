@@ -15,6 +15,7 @@ jest.mock('process');
 
 describe('standardizeWidget', () => {
   const testWidget: Omit<WidgetConfig, 'id'> = {
+    data: {},
     inputs: {},
     position: {
       height: 0,
@@ -40,10 +41,19 @@ describe('standardizeWidget', () => {
     expect(input.id).toEqual(output.id);
   });
 
-  it('parses existing refreshRate', () => {
+  it('parses existing refreshRate strings', () => {
     const output = standardizeWidget({
       id: 'foo',
       refreshRate: '1m',
+      ...testWidget,
+    });
+    expect(output.refreshRate).toEqual(60000);
+  });
+
+  it('accepts existing refreshRate numbers', () => {
+    const output = standardizeWidget({
+      id: 'foo',
+      refreshRate: 60000,
       ...testWidget,
     });
     expect(output.refreshRate).toEqual(60000);
@@ -71,6 +81,7 @@ describe('dedupeWidgets', () => {
 
 describe('widgetFilter', () => {
   const exampleWidget: WidgetConfig = {
+    data: {},
     id: 'example-widget',
     inputs: {
       exampleInput: 'Hello!',

@@ -10,6 +10,7 @@ class _WidgetWrapper extends LitElement {
   @property({ type: Object }) js: Record<string, string>;
   @property({ type: Object }) inputs: Record<string, unknown>;
   @property({ type: Number }) refreshRate: number;
+  @property({ type: Object }) data: {};
   interval: number;
 
   @queryAll('[id]') elems: HTMLElement[];
@@ -19,7 +20,7 @@ class _WidgetWrapper extends LitElement {
     super.connectedCallback();
   }
 
-  protected firstUpdated(): void {
+  protected async firstUpdated(): Promise<void> {
     this.executeFunction('start');
     if (this.refreshRate) {
       this.interval = window.setInterval(
@@ -40,6 +41,7 @@ class _WidgetWrapper extends LitElement {
   requestWidgetMethod(method: string) {
     window.dispatchEvent(new CustomEvent('requestMethod', {
       detail: {
+        data: this.data,
         id: this.elementId,
         method,
       },
@@ -48,17 +50,18 @@ class _WidgetWrapper extends LitElement {
 
   onWidgetUpdate(ev: CustomEvent) {
     if (ev.detail.id === this.elementId) {
-      this.executeFunction('update', ev.detail.update);
+      this.data = ev.detail.update;
+      this.executeFunction('update');
     }
   }
 
-  executeFunction(name: string, update: unknown = null) {
+  executeFunction(name: string) {
     const targetFunction = this.js[name];
 
     const context = {
+      data: this.data,
       elements: {},
       inputs: { ...this.inputs },
-      update,
     };
 
     if (targetFunction) {
