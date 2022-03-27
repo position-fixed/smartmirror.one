@@ -8,7 +8,7 @@
     "test": "jest",
     "clean:public": "rm -rf _public && cp -R ../frontend/dist ./_public",
     "build": "npm run clean:public && tsc",
-    "package": "caxa --input \".\" --output \"packages/test-package\" --exclude \"{src,packages}\" -- \"{{caxa}}/node_modules/.bin/node\" \"{{caxa}}/dist/index.js\""
+    "package": "caxa --input \".\" --output \"_bins/smartmirror1\" --exclude \"{src,packages}\" -- \"{{caxa}}/node_modules/.bin/node\" \"{{caxa}}/dist/index.js\""
   },
   "dependencies": {
     "js-yaml": "^4.1.0",
