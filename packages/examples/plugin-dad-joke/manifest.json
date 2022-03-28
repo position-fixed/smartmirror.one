@@ -1,0 +1,13 @@
+{
+  "name": "plugin-dad-joke",
+  "author": "A Plugin Author",
+  "email": "plugins@smartmirror.one",
+  "widgets": {
+    "default": {
+      "refreshRate": "1m",
+      "html": ["index.html"],
+      "css": ["style.css"],
+      "variables": []
+    }
+  }
+}
