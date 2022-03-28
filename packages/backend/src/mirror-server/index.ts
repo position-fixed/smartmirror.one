@@ -18,7 +18,7 @@ export const startMirrorServer = async (config: Config) => {
   });
 
   for (const widget of config.widgets) {
-    const data = executePluginMethod({
+    const data = await executePluginMethod({
       config,
       data: {},
       methodName: 'init',

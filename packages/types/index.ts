@@ -29,8 +29,8 @@ export type WidgetDefinition = {
   html: string[];
   css: string[];
   frontend: Record<string, string>;
-  backend: Record<string, (data?: Record<string, unknown>) => Record<string, unknown>>;
-  variables: WidgetVariables[];
+  backend: Record<string, (data?: Record<string, unknown>) => Promise<Record<string, unknown>>>;
+  variables?: WidgetVariables[];
 };
 
 export type PluginDefinition = {

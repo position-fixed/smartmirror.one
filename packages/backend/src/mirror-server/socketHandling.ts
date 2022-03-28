@@ -24,11 +24,11 @@ interface ConnectHandlersProps {
   socket: WebSocket;
 }
 
-export const handleMessage = ({
+export const handleMessage = async ({
   config,
   msg,
   socket,
-}: HandleMessageProps): void => {
+}: HandleMessageProps): Promise<void> => {
   const { action, payload } = JSON.parse(msg) as ClientMessage;
   switch (action) {
 
@@ -47,7 +47,7 @@ export const handleMessage = ({
 
   case 'requestMethod':
     const widgetId = payload.id as string;
-    const update = executePluginMethod({
+    const update = await executePluginMethod({
       config,
       data: payload.data as Record<string, unknown> || {},
       methodName: payload.method as string,
@@ -64,7 +64,7 @@ export const handleMessage = ({
 };
 
 export const connectHandlers = ({ config, socket }: ConnectHandlersProps): void => {
-  socket.on('message', (msg) => handleMessage({
+  socket.on('message', async (msg) => await handleMessage({
     config,
     msg: msg.toString(),
     socket,

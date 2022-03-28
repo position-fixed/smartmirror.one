@@ -95,12 +95,14 @@ export const widgetFilter = ({
   const [ plugin, widget ] = item.widget.split('.');
   const foundPlugin = plugins.find(p => p.name === plugin);
   if (foundPlugin) {
-    const expectedVars = foundPlugin.widgets[widget].variables;
-    const varsCheck = expectedVars.find(variable => {
-      return Object.prototype.hasOwnProperty.call(item.inputs, variable.name)
-        && typeof item.inputs[variable.name] === variable.type;
-    });
-    if (varsCheck) {
+    const expectedVars = foundPlugin.widgets[widget].variables || [];
+    const varsValid = expectedVars.length > 0
+      ? expectedVars.some(variable => {
+        return Object.prototype.hasOwnProperty.call(item.inputs, variable.name)
+          && typeof item.inputs[variable.name] === variable.type;
+      })
+      : true;
+    if (varsValid) {
       return true;
     } else {
       stdout.write(`Dropping ${item.id} because the variables do not match requirements.`);

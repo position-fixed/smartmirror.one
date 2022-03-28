@@ -127,6 +127,19 @@ describe('widgetFilter', () => {
     expect(result).toEqual([]);
   });
 
+  it('retains widget definitions without any variable inputs', () => {
+    const plugin = {
+      ...examplePlugin,
+    };
+    delete plugin.widgets['bar'].variables;
+
+    const result = [ exampleWidget ].filter(item => widgetFilter({
+      item,
+      plugins: [ plugin ],
+    }));
+    expect(result).toEqual([ exampleWidget ]);
+  });
+
   it('drops widget definitions that reference unknown plugins', () => {
     const malformedWidget = {
       ...exampleWidget,

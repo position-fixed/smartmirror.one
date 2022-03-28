@@ -6,8 +6,8 @@ describe('executePluginMethod', () => {
   const exampleConfig: Config = (globalThis as unknown as GlobalTest)
     .getConfig({ backend: { exampleFunction }});
 
-  it('executes a requested method', () => {
-    executePluginMethod({
+  it('executes a requested method', async () => {
+    await executePluginMethod({
       config: exampleConfig,
       data: {},
       methodName: 'exampleFunction',
@@ -16,8 +16,8 @@ describe('executePluginMethod', () => {
     expect(exampleFunction).toBeCalledTimes(1);
   });
 
-  it('returns null when the requested widget cannot be found', () => {
-    const result = executePluginMethod({
+  it('returns null when the requested widget cannot be found', async () => {
+    const result = await executePluginMethod({
       config: exampleConfig,
       data: {},
       methodName: 'exampleFunction',
@@ -26,8 +26,8 @@ describe('executePluginMethod', () => {
     expect(result).toBe(null);
   });
 
-  it('returns null when the requested method cannot be found', () => {
-    const result = executePluginMethod({
+  it('returns null when the requested method cannot be found', async () => {
+    const result = await executePluginMethod({
       config: exampleConfig,
       data: {},
       methodName: 'wrongFunction',
