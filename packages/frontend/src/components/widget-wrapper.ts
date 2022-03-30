@@ -10,7 +10,7 @@ class _WidgetWrapper extends LitElement {
   @property({ type: Object }) js: Record<string, string>;
   @property({ type: Object }) inputs: Record<string, unknown>;
   @property({ type: Number }) refreshRate: number;
-  @property({ type: Object }) data: {};
+  @property({ type: Object }) data: Record<string, unknown>;
   interval: number;
 
   @queryAll('[id]') elems: HTMLElement[];
