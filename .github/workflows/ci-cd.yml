@@ -104,7 +104,7 @@ jobs:
     - name: Download Release Binaries
       uses: actions/download-artifact@v3
       with:
-        name: build-result
+        name: release
         path: releases
 
     - run: ls -R
