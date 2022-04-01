@@ -82,8 +82,6 @@ jobs:
         name: build-result
         path: packages
 
-    - run: ls -R
-
     - name: Generate Binary
       run: npm run update:public && npm run package
       working-directory: packages/backend
@@ -107,17 +105,15 @@ jobs:
         name: release
         path: releases
 
-    - run: ls -R
-
     - name: Release Binaries to GitHub
       uses: meeDamian/github-release@2.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        name: Smartmirror.one
+        name: Smartmirror.one - Latest
         allow_override: true
         prerelease: true
-        tag: 1.0.0
+        tag: latest
         files: >
-          smartmirror-one-v1.0.0-linux:releases/smartmirror1-linux
-          smartmirror-one-v1.0.0-mac:releases/smartmirror1-darwin
-          smartmirror-one-v1.0.0-windows:releases/smartmirror1-win32.exe
+          smartmirror-one-latest-linux:releases/smartmirror1-linux
+          smartmirror-one-latest-mac:releases/smartmirror1-darwin
+          smartmirror-one-latest-windows:releases/smartmirror1-win32.exe
