@@ -2,6 +2,7 @@
 module.exports = {
   collectCoverage: true,
   preset: 'ts-jest',
-  testEnvironment: 'node',
+  reporters: ['default', 'jest-junit'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testEnvironment: 'node',
 };

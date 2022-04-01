@@ -10,6 +10,7 @@ node_modules
 _public
 _bins
 coverage
+junit.xml
 dist
 *.zip
 

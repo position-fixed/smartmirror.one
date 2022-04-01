@@ -6,9 +6,9 @@
     "dev": "ts-node-dev src",
     "lint": "eslint src",
     "test": "jest",
-    "clean:public": "rm -rf _public && cp -R ../frontend/dist ./_public",
-    "build": "npm run clean:public && tsc",
-    "package": "caxa --input \".\" --output \"_bins/smartmirror1\" --exclude \"{src,packages}\" -- \"{{caxa}}/node_modules/.bin/node\" \"{{caxa}}/dist/index.js\""
+    "update:public": "node ./build/update-frontend.js",
+    "build": "tsc",
+    "package": "node ./build/package.js"
   },
   "dependencies": {
     "js-yaml": "^4.1.0",
@@ -25,6 +25,7 @@
     "@types/ws": "^8.2.2",
     "caxa": "^2.1.0",
     "jest": "^27.5.1",
+    "jest-junit": "^13.0.0",
     "ts-jest": "^27.1.3",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.5"
