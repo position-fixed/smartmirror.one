@@ -57,6 +57,7 @@ jobs:
   package:
     name: Package Binaries
     runs-on: ${{ matrix.os }}
+    needs: lint-test-build
     if: github.event_name != 'pull_request'
     strategy:
       fail-fast: false
@@ -95,10 +96,10 @@ jobs:
   release:
     name: Release Version
     runs-on: ubuntu-latest
+    needs: package
     if: github.event_name != 'pull_request'
     
     steps:
-
     - name: Download Release Binaries
       uses: actions/download-artifact@v3
       with:
