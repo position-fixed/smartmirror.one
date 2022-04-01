@@ -80,11 +80,12 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: build-result
+        path: packages
 
     - run: ls -R
 
     - name: Generate Binary
-      run: npm run update-public && npm run package
+      run: npm run update:public && npm run package
       working-directory: packages/backend
 
     - name: Upload Binary for Release
