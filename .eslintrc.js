@@ -20,15 +20,16 @@ module.exports = {
   ],
   rules: {
     '@typescript-eslint/ban-ts-comment': 0,
-    '@typescript-eslint/no-var-requires': 0,
+    '@typescript-eslint/no-inferrable-types': 0,
     '@typescript-eslint/no-unused-vars': [ 'error', {
       varsIgnorePattern: '^_',
     }],
+    '@typescript-eslint/no-var-requires': 0,
     'array-bracket-spacing': [ 'error', 'always', {
       arraysInArrays: false,
       objectsInArrays: false,
     }],
-    'comma-dangle': [ 'error', 'always-multiline'],
+    'comma-dangle': [ 'error', 'always-multiline' ],
     'comma-spacing': [ 'error', {
       after: true,
       before: false,
@@ -41,8 +42,8 @@ module.exports = {
     'linebreak-style': [ 'error', 'unix' ],
     'max-len': [ 'error', {
       code: 100,
-      ignoreTemplateLiterals: true,
       ignoreRegExpLiterals: true,
+      ignoreTemplateLiterals: true,
       tabWidth: 2,
     }],
     'no-case-declarations': 0,
@@ -64,12 +65,12 @@ module.exports = {
         'single',
         'multiple',
         'none',
-      ]
+      ],
     }],
     'sort-keys': [ 'error', 'asc', {
       caseSensitive: true,
-      natural: false,
       minKeys: 3,
-    }]
+      natural: false,
+    }],
   },
 };
