@@ -9,6 +9,7 @@ node_modules
 .parcel-cache
 _public
 _bins
+_example
 coverage
 junit.xml
 dist

@@ -83,7 +83,7 @@ jobs:
         path: packages
 
     - name: Generate Binary
-      run: npm run update:public && npm run package
+      run: npm run update:dependencies && npm run package
       working-directory: packages/backend
 
     - name: Upload Binary for Release

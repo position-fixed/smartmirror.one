@@ -6,7 +6,7 @@
     "dev": "ts-node-dev src",
     "lint": "eslint src",
     "test": "jest",
-    "update:public": "node ./build/update-frontend.js",
+    "update:dependencies": "node ./build/update-dependencies.js",
     "build": "tsc",
     "package": "node ./build/package.js"
   },
