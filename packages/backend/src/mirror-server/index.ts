@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { WebSocketServer } from 'ws';
 import {
   createServer,
@@ -10,7 +11,7 @@ import { executePluginMethod } from './executePluginMethod';
 
 export const startMirrorServer = async (config: Config) => {
   const mirrorIndex: string = Buffer
-    .from(require('../../_public/index.js'), 'base64')
+    .from(require(join(__dirname, '../../_public/index.js')), 'base64')
     .toString('utf-8');
   const httpServer: HttpServer = createServer((req, res) => {
     req.addListener('end', () => { res.end(mirrorIndex); });
