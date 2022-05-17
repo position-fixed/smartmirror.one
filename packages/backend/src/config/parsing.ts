@@ -131,9 +131,14 @@ export const standardizeWidget = (widget: WidgetConfig): WidgetConfig => {
   return standardWidget;
 };
 
-export const parseConfig = async (contentLocation: string): Promise<ConfigWithoutRoot> => {
+type ParseConfigResults = {
+  checkedConfig: ConfigWithoutRoot,
+  newEnvironment: boolean,
+}
+
+export const parseConfig = async (contentLocation: string): Promise<ParseConfigResults> => {
   const defaultWidgets = [ defaultWidget as WidgetConfig ];
-  const content: Partial<LoadedConfig> = await getConfigFile(contentLocation);
+  const { content, newEnvironment } = await getConfigFile(contentLocation);
   const checkedConfig:ConfigWithoutRoot = {
     boardSetup: {
       height: 10,
@@ -145,7 +150,7 @@ export const parseConfig = async (contentLocation: string): Promise<ConfigWithou
     widgets: (content?.widgets || defaultWidgets).map(standardizeWidget),
   };
 
-  return checkedConfig;
+  return { checkedConfig, newEnvironment };
 };
 
 export const dedupeWidgets = (list: string[], item: WidgetConfig) => {
