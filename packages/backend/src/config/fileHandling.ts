@@ -55,7 +55,7 @@ export const getConfigFile = async (configLocation: string): Promise<ConfigFileR
 
 export const prepPluginEnvironment = async (rootFolder: string): Promise<void> => {
   const pluginFolder = join(rootFolder, DEFAULT_PLUGIN);
-  const sourceLocation = join(__dirname, '../../_examples', DEFAULT_PLUGIN);
+  const sourceLocation = join(__dirname, '../../_example', DEFAULT_PLUGIN);
   await mkdir(pluginFolder, { recursive: true });
   await cp(sourceLocation, pluginFolder, { recursive: true, force: true });
 };

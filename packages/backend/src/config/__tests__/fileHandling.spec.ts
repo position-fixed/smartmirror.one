@@ -94,7 +94,7 @@ describe('getFileContents', () => {
 
 describe('prepPluginEnvironment', () => {
   const mockFiles = {
-    [`/_examples/${DEFAULT_PLUGIN}`]: {
+    [`/_example/${DEFAULT_PLUGIN}`]: {
       'test.js': 'console.log();',
       'foo.js': 'console.log();',
     },

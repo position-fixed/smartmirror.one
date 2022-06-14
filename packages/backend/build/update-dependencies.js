@@ -7,7 +7,7 @@ const dependencies = [{
   target: join(__dirname, '../_public'),
 }, {
   src: join(__dirname, '../../examples/plugin-greeting'),
-  target: join(__dirname, '../_example'),
+  target: join(__dirname, '../_example/plugin-greeting'),
 }];
 
 dependencies.forEach(({ src, target }) => {
