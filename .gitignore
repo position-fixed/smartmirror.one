@@ -5,7 +5,7 @@ node_modules
 *.env
 *.log
 
-# Build Artifactos
+# Build Artifacts
 .parcel-cache
 _public
 _bins
