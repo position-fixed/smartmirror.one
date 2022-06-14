@@ -47,13 +47,6 @@ jobs:
         name: build-result
         path: packages/**/dist
 
-    - name: Comment Code Coverage Results on PR
-      if: github.event_name == 'pull_request'
-      uses: ArtiomTr/jest-coverage-report-action@v2
-      with:
-        coverage-file: packages/backend/coverage/coverage-final.json
-        base-coverage-file: packages/backend/coverage/coverage-final.json
-
   package:
     name: Package Binaries
     runs-on: ${{ matrix.os }}
