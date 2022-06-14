@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  smartmirror1:
+    build:
+      context: ../../
+      dockerfile: ./packages/docker-test/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./config:/root/.smartmirror

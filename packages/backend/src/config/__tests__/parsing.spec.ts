@@ -275,25 +275,28 @@ describe('parseConfig', () => {
   it('provides a fallback config', async () => {
     const result = await parseConfig('config.yml');
     const expected = {
-      boardSetup: {
-        height: 10,
-        testMode: false,
-        width: 10,
-      },
-      port: 3000,
-      widgets: [{
-        id: expect.any(String),
-        inputs: {
-          displayName: 'there',
-        },
-        position: {
-          height: 2,
-          left: 5,
-          top: 5,
+      checkedConfig: {
+        boardSetup: {
+          height: 10,
+          testMode: false,
           width: 10,
         },
-        widget: 'plugin-greeting.default',
-      }],
+        port: 3000,
+        widgets: [{
+          id: expect.any(String),
+          inputs: {
+            displayName: 'there',
+          },
+          position: {
+            height: 2,
+            left: 5,
+            top: 5,
+            width: 10,
+          },
+          widget: 'plugin-greeting.default',
+        }],
+      },
+      newEnvironment: false,
     };
     expect(result).toEqual(expected);
   });

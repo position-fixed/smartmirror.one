@@ -1,4 +1,4 @@
-import { html, fixture, expect } from '@open-wc/testing';
+import { expect, fixture, html } from '@open-wc/testing';
 
 import { SmartMirror } from '../src/components/smart-mirror';
 import '../src/components/smart-mirror';

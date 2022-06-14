@@ -1,6 +1,8 @@
 import { randomUUID } from 'crypto';
 import { WidgetConfig } from '@smartmirror.one/types';
 
+export const DEFAULT_PLUGIN = 'plugin-greeting';
+
 export const defaultWidget: Omit<WidgetConfig, 'data'> = {
   id: randomUUID(),
   inputs: {
@@ -12,5 +14,5 @@ export const defaultWidget: Omit<WidgetConfig, 'data'> = {
     top: 5,
     width: 10,
   },
-  widget: 'plugin-greeting.default',
+  widget: `${DEFAULT_PLUGIN}.default`,
 };

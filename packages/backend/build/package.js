@@ -8,12 +8,12 @@ const { platform, stdout } = require('process');
   stdout.write(`Generating ${output}\n`);
 
   await caxa({
-    input: join(__dirname, '..'),
-    output: join(__dirname, `../_bins/${output}`),
-    exclude: '{src,packages}',
     command: [
       '{{caxa}}/node_modules/.bin/node',
       '{{caxa}}/dist/index.js',
     ],
+    exclude: '{src,packages}',
+    input: join(__dirname, '..'),
+    output: join(__dirname, `../_bins/${output}`),
   });
 })();
