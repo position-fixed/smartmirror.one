@@ -1,20 +1,20 @@
-import http from 'http';
-import https from 'https';
-import process from 'process';
+import { get as getRequest } from 'https';
+import { RequestOptions } from 'http';
+import { env, stdout } from 'process';
 
-import {
+import { Regions } from './types/index';
+import type {
   BaseReqHeaders,
   Bounds,
   Coords,
   RegionizedCoords,
   RegionizedString,
-  Regions,
   WazeCoordsResponse,
   WazeRouteCalcProps,
   WazeRouteResponse,
   WazeRouteResponseObject,
   WazeRouteResult,
-} from './interfaces/index';
+} from './types/index';
 
 /**
  * Calculate actual route time and distance with Waze API
@@ -315,20 +315,20 @@ class WazeRouteCalculator {
    * @param value {string} The string to log
    */
   private debugLog(value: string) {
-    if (process.env.DEBUG === 'true') {
-      process.stdout.write(value);
+    if (env.DEBUG === 'true') {
+      stdout.write(value);
     }
   }
 
   private wazeRequest(path: string, params: Record<string, string | number | boolean>) {
     return new Promise((resolve, reject) => {
-      const reqOptions: http.RequestOptions = {
+      const reqOptions: RequestOptions = {
         headers: this.baseHeaders,
         host: this.wazeURL,
         path: `/${path}?${this.serializeParameters(params)}`,
       };
 
-      const req = https.get(reqOptions, (res) => {
+      const req = getRequest(reqOptions, (res) => {
         res.setEncoding('utf8');
         let responseBody: string = '';
         res.on('data', (chunk) => responseBody += chunk);
