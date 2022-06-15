@@ -1,6 +1,10 @@
 {
   "name": "@smartmirror.one/ov-info",
   "main": "ov-info.js",
+  "scripts": {
+    "example": "node example.js",
+    "lint": "eslint *.js"
+  },
   "dependencies": {
     "axios": "^0.20.0",
     "date-fns": "^2.15.0"

@@ -8,9 +8,9 @@ dotenv.config();
   const ovInfo = new OvInfo();
 
   const locations = await ovInfo.getLocationIds({
-    maxDistance: +process.env.MAX_DISTANCE,
     latitude: +process.env.LATITUDE,
     longitude: +process.env.LONGITUDE,
+    maxDistance: +process.env.MAX_DISTANCE,
   });
 
   const stopInfo = await ovInfo.getDeparturesForLocations({

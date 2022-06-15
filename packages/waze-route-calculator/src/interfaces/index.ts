@@ -6,23 +6,23 @@ export type BaseReqHeaders = {
 };
 
 export enum Regions {
-  US = 'US',
+  AU = 'AU',
   EU = 'EU',
   IL = 'IL',
-  AU = 'AU',
+  US = 'US',
 }
 
 export type Bounds = {
-  top: number;
-  right: number;
   bottom: number;
   left: number;
+  right: number;
+  top: number;
 };
 
 export type Coords = {
   lat: number;
   lon: number;
-  bounds?: Bounds | {};
+  bounds?: Bounds | Record<string, never>;
 };
 
 export type RegionizedString = {
@@ -34,11 +34,11 @@ export type RegionizedCoords = {
 }
 
 export interface WazeRouteCalcProps {
-  startAddress: string;
+  avoidFerries?: boolean;
+  avoidSubscriptionRoads?: boolean;
+  avoidTollRoads?: boolean;
   endAddress: string;
   region?: Regions;
+  startAddress: string;
   vehicleType?: string;
-  avoidTollRoads?: boolean;
-  avoidSubscriptionRoads?: boolean;
-  avoidFerries?: boolean;
 }

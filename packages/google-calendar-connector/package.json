@@ -2,7 +2,8 @@
   "name": "@smartmirror.one/google-calendar-connector",
   "main": "gcalendar-connector.js",
   "scripts": {
-    "example": "node example.js"
+    "example": "node example.js",
+    "lint": "eslint *.js"
   },
   "license": "CC-BY-4.0",
   "dependencies": {

@@ -5,6 +5,7 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "ts-node-dev src/example.ts",
+    "lint": "eslint src/**/*.ts",
     "build": "tsc --project tsconfig.build.json"
   },
   "devDependencies": {

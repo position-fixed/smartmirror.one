@@ -42,6 +42,7 @@ module.exports = {
     'linebreak-style': [ 'error', 'unix' ],
     'max-len': [ 'error', {
       code: 100,
+      ignoreComments: true,
       ignoreRegExpLiterals: true,
       ignoreTemplateLiterals: true,
       tabWidth: 2,

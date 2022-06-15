@@ -61,10 +61,10 @@ class OvInfo {
       .map(code => {
         const stop = stopCodes[code];
         const dist = this.calculateDistance({
-          originLatitude: latitude,
-          originLongitude: longitude,
           destinationLatitude: stop.Latitude,
           destinationLongitude: stop.Longitude,
+          originLatitude: latitude,
+          originLongitude: longitude,
         });
 
         if (dist < maxDistance) {
@@ -133,8 +133,8 @@ class OvInfo {
         .map((passingTransit) => line.Passes[passingTransit])
         .flatMap((passingTransit) => this.parsePassingTransit({
           location: line.Stop.TimingPointName,
-          passingTransit,
           maxTime,
+          passingTransit,
         }))
         .filter((p) => p);
     }
@@ -149,14 +149,14 @@ class OvInfo {
 
     if (passingTransit.TripStopStatus !== 'PASSED' && inSelectedTimeSlot) {
       const thisTransitPass = {
-        location,
-        number: passingTransit.LinePublicNumber,
-        name: passingTransit.DestinationName50.replace(/\s\s/, ' - '),
-        type: passingTransit.TransportType,
         departures: [{
           time: dateFns.format(expectedDeparture, 'HH:mm'),
           late,
         }],
+        location,
+        name: passingTransit.DestinationName50.replace(/\s\s/, ' - '),
+        number: passingTransit.LinePublicNumber,
+        type: passingTransit.TransportType,
       };
 
       return thisTransitPass;

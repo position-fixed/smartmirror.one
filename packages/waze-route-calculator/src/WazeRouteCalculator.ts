@@ -4,13 +4,13 @@ import process from 'process';
 
 import {
   BaseReqHeaders,
-  Regions,
   Bounds,
   Coords,
-  RegionizedString,
   RegionizedCoords,
-  WazeRouteCalcProps,
+  RegionizedString,
+  Regions,
   WazeCoordsResponse,
+  WazeRouteCalcProps,
   WazeRouteResponse,
   WazeRouteResponseObject,
   WazeRouteResult,
@@ -29,7 +29,7 @@ class WazeRouteCalculator {
   private coordsServers: RegionizedString;
   private routingServers: RegionizedString;
   private coordinatesMatch: RegExp;
- 
+
   private startAddress: string;
   private endAddress: string;
   private startCoords: Coords;
@@ -42,12 +42,12 @@ class WazeRouteCalculator {
       'User-Agent': 'Mozilla/5.0',
       referer: `https://${this.wazeURL}/`,
     };
-    this.vehicleTypes = ['TAXI', 'MOTORCYCLE'];
-    this.routeOptions = ['AVOID_TRAILS'];
+    this.vehicleTypes = [ 'TAXI', 'MOTORCYCLE' ];
+    this.routeOptions = [ 'AVOID_TRAILS' ];
     this.baseCoords = {
-      US: {
-        lat: 40.713,
-        lon: -74.006,
+      AU: {
+        lat: -35.281,
+        lon: 149.128,
       },
       EU: {
         lat: 47.498,
@@ -57,22 +57,22 @@ class WazeRouteCalculator {
         lat: 31.768,
         lon: 35.214,
       },
-      AU: {
-        lat: -35.281,
-        lon: 149.128,
+      US: {
+        lat: 40.713,
+        lon: -74.006,
       },
     };
     this.coordsServers = {
-      US: 'SearchServer/mozi',
+      AU: 'row-SearchServer/mozi',
       EU: 'row-SearchServer/mozi',
       IL: 'il-SearchServer/mozi',
-      AU: 'row-SearchServer/mozi',
+      US: 'SearchServer/mozi',
     };
     this.routingServers = {
-      US: 'RoutingManager/routingRequest',
+      AU: 'row-RoutingManager/routingRequest',
       EU: 'row-RoutingManager/routingRequest',
       IL: 'il-RoutingManager/routingRequest',
-      AU: 'row-RoutingManager/routingRequest'
+      US: 'RoutingManager/routingRequest',
     };
     this.coordinatesMatch = /^[-+]?\d{1,2}\.\d+,\s*[-+]?\d{1,3}\.\d+$/;
   }
@@ -81,7 +81,6 @@ class WazeRouteCalculator {
    * Anything that could not be instantiated in the regular constructor.
    */
   async init(props: WazeRouteCalcProps) {
-    
     this.startAddress = props.startAddress;
     this.endAddress = props.endAddress;
     this.debugLog(`From: ${this.startAddress} - to: ${this.endAddress}\n`);
@@ -122,7 +121,7 @@ class WazeRouteCalculator {
    * @returns Coords object
    */
   private coordsStringParser(coords: string): Coords {
-    const [lat, lon] = coords.split(',');
+    const [ lat, lon ] = coords.split(',');
     return {
       lat: Number(lat.trim()),
       lon: Number(lon.trim()),
@@ -138,28 +137,28 @@ class WazeRouteCalculator {
     const baseCoords = this.baseCoords[this.region];
     const getCord = this.coordsServers[this.region];
     const reqConfig = {
-      q: address,
       lang: 'eng',
-      origin: 'livemap',
       lat: baseCoords.lat,
       lon: baseCoords.lon,
+      origin: 'livemap',
+      q: address,
     };
     const data = await this.wazeRequest(getCord, reqConfig) as WazeCoordsResponse;
     const result = data.find(item => item.city);
     if (result) {
       // Sometimes the coords don't match up
-      const bounds: Bounds | {} = result.bounds ? {
-        top: Math.max(result.bounds.top, result.bounds.bottom),
-        right: Math.max(result.bounds.left, result.bounds.right),
+      const bounds: Bounds | Record<string, never> = result.bounds ? {
         bottom: Math.min(result.bounds.top, result.bounds.bottom),
         left: Math.min(result.bounds.left, result.bounds.right),
+        right: Math.max(result.bounds.left, result.bounds.right),
+        top: Math.max(result.bounds.top, result.bounds.bottom),
       } : {};
 
       return {
+        bounds,
         lat: result.location.lat,
         lon: result.location.lon,
-        bounds,
-      }
+      };
     }
     throw new Error(`Cannot get coords for ${address}`);
   }
@@ -170,18 +169,21 @@ class WazeRouteCalculator {
    * @param timeDelta Distance in seconds to trip
    * @returns One or more alternatives
    */
-  private async getRoute(nPaths: number = 1, timeDelta: number = 0): Promise<WazeRouteResponseObject[]> {
+  private async getRoute(
+    nPaths: number = 1,
+    timeDelta: number = 0,
+  ): Promise<WazeRouteResponseObject[]> {
     const routingServer = this.routingServers[this.region];
     const requestConfig = {
-      from: `x:${this.startCoords.lon} y:${this.startCoords.lat}`,
-      to: `x:${this.endCoords.lon} y:${this.endCoords.lat}`,
       at: timeDelta,
-      returnJSON: true,
-      returnGeometries: true,
-      returnInstructions: true,
-      timeout: 60000,
+      from: `x:${this.startCoords.lon} y:${this.startCoords.lat}`,
       nPaths,
       options: this.routeOptions.join(','),
+      returnGeometries: true,
+      returnInstructions: true,
+      returnJSON: true,
+      timeout: 60000,
+      to: `x:${this.endCoords.lon} y:${this.endCoords.lat}`,
     };
     if (this.vehicleTypes) requestConfig['vehicleTypes'] = this.vehicleTypes;
     // Handle vignette system in Europe. Defaults to false (show all routes)
@@ -195,9 +197,9 @@ class WazeRouteCalculator {
         return data.alternatives.map(alt => alt.response);
       }
       if (nPaths > 1) {
-        return [data.response];
+        return [ data.response ];
       }
-      return [data.response];
+      return [ data.response ];
     }
     throw new Error('Empty response');
   }
@@ -212,7 +214,7 @@ class WazeRouteCalculator {
   private addUpRoute(
     results: WazeRouteResult[],
     realTime: boolean = true,
-    stopAtBounds: boolean = false
+    stopAtBounds: boolean = false,
   ): [number, number] {
     const startBounds = this.startCoords.bounds as Bounds;
     const endBounds = this.endCoords.bounds as Bounds;
@@ -244,7 +246,7 @@ class WazeRouteCalculator {
 
     const routeTime = time / 60.0;
     const routeDistance = distance / 1000.0;
-    return [routeTime, routeDistance];
+    return [ routeTime, routeDistance ];
   }
 
   /**
@@ -261,13 +263,13 @@ class WazeRouteCalculator {
   ): Promise<[number, number]> {
     const route = await this.getRoute(1, timeDelta);
     const result: WazeRouteResult[] = route[0].results;
-    const [routeTime, routeDistance] = this.addUpRoute(result, realTime, stopAtBounds);
+    const [ routeTime, routeDistance ] = this.addUpRoute(result, realTime, stopAtBounds);
     this.debugLog(`Time ${routeTime} minutes, distance ${routeDistance} km\n`);
-    return [routeTime, routeDistance];
+    return [ routeTime, routeDistance ];
   }
 
   /**
-   * 
+   *
    * @param nPaths Number of routes
    * @param realTime Should real time be used?
    * @param stopAtBounds Should calculation stop at bounds?
@@ -300,7 +302,7 @@ class WazeRouteCalculator {
    * @param params An object to turn into a querystring
    * @returns A serialized querystring
    */
-  private serializeParameters(params: {}): string {
+  private serializeParameters(params: Record<string, string | number | boolean>): string {
     const bits: string[] = [];
     Object.keys(params).forEach(key => {
       bits.push(`${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`);
@@ -318,11 +320,11 @@ class WazeRouteCalculator {
     }
   }
 
-  private wazeRequest(path: string, params: {}) {
+  private wazeRequest(path: string, params: Record<string, string | number | boolean>) {
     return new Promise((resolve, reject) => {
       const reqOptions: http.RequestOptions = {
-        host: this.wazeURL,
         headers: this.baseHeaders,
+        host: this.wazeURL,
         path: `/${path}?${this.serializeParameters(params)}`,
       };
 
@@ -331,10 +333,10 @@ class WazeRouteCalculator {
         let responseBody: string = '';
         res.on('data', (chunk) => responseBody += chunk);
         res.on('end', () => {
-          resolve(JSON.parse(responseBody))
+          resolve(JSON.parse(responseBody));
         });
       });
-  
+
       req.on('error', (err) => reject(err));
       req.end();
     });

@@ -28,15 +28,15 @@ export interface Location {
 }
 
 export enum CountryName {
-  Netherlands = "Netherlands",
+  Netherlands = 'Netherlands',
 }
 
 export enum Provider {
-  Waze = "waze",
+  Waze = 'waze',
 }
 
 export enum StateName {
-  NoState = "No State",
+  NoState = 'No State',
 }
 
 /**
@@ -44,10 +44,10 @@ export enum StateName {
  */
 
 export interface WazeRouteResponse {
-  error?: string;
-  response:  WazeRouteResponseObject;
   alternatives?: { response: WazeRouteResponseObject }[];
   coords:    Coord[];
+  error?: string;
+  response:  WazeRouteResponseObject;
   segCoords: null;
 }
 
@@ -58,22 +58,22 @@ export interface Coord {
 }
 
 export enum CoordsZ {
-  NaN = "NaN",
+  NaN = 'NaN',
 }
 
 export enum AvoidStatus {
-  Open = "OPEN",
+  Open = 'OPEN',
 }
 
 export enum Lane {
-  WholeSegment = "WHOLE_SEGMENT",
+  WholeSegment = 'WHOLE_SEGMENT',
 }
 
 export interface WazeRouteResponseObject {
   results:                 WazeRouteResult[];
   streetNames:             Array<null | string>;
-  tileIds:                 any[];
-  tileUpdateTimes:         any[];
+  tileIds:                 unknown[];
+  tileUpdateTimes:         unknown[];
   geom:                    null;
   fromFraction:            number;
   toFraction:              number;
@@ -101,15 +101,15 @@ export interface WazeRouteResponseObject {
   hovIndex:                number;
   timeZone:                null;
   routeType:               string[];
-  routeAttr:               any[];
+  routeAttr:               unknown[];
   astarCost:               number;
   reorderChoice:           null;
   totalRouteTime:          number;
-  laneTypes:               any[];
+  laneTypes:               unknown[];
   preferredStoppingPoints: null;
-  areas:                   any[];
-  requiredPermits:         any[];
-  etaHistograms:           any[];
+  areas:                   unknown[];
+  requiredPermits:         unknown[];
+  etaHistograms:           unknown[];
   entryPoint:              null;
   shortRouteName:          null;
   tollPrice:               number;
@@ -142,8 +142,8 @@ export interface WazeRouteResult {
   attributes:               number;
   lane:                     Lane;
   laneType:                 null;
-  areas:                    any[];
-  requiredPermits:          any[];
+  areas:                    unknown[];
+  requiredPermits:          unknown[];
   detourRoute:              null;
   naiveRouteFullResult:     null;
   detourRouteFullResult:    null;

@@ -24,7 +24,7 @@ class gCalendarConnector {
     const oAuth2Client = new google.auth.OAuth2(
       this.clientId,
       this.clientSecret,
-      this.returnUrl
+      this.returnUrl,
     );
     return oAuth2Client;
   }
@@ -33,7 +33,7 @@ class gCalendarConnector {
     const oAuth2Client = this.getOAuth2Client();
     const authUrl = oAuth2Client.generateAuthUrl({
       access_type: 'offline',
-      scope: ['https://www.googleapis.com/auth/calendar.readonly'],
+      scope: [ 'https://www.googleapis.com/auth/calendar.readonly' ],
     });
 
     return authUrl;
@@ -55,11 +55,11 @@ class gCalendarConnector {
         if (error) reject(error);
         const events = response.data.items || [];
         const mappedEvents = events.map(event => ({
-          start: event.start.dateTime || event.start.date,
-          end: event.end.dateTime || event.end.date,
-          summary: event.summary,
-          fullDay: !event.start.dateTime,
           calendar: event.organizer.displayName || '',
+          end: event.end.dateTime || event.end.date,
+          fullDay: !event.start.dateTime,
+          start: event.start.dateTime || event.start.date,
+          summary: event.summary,
         }));
         resolve(mappedEvents);
       };
@@ -77,18 +77,18 @@ class gCalendarConnector {
 
       calendar.events.list({
         calendarId,
-        timeMin: dateFns.formatISO(now),
-        timeMax: dateFns.formatISO(tomorrow),
-        singleEvents: true,
-        orderBy: 'startTime',
         maxResults,
+        orderBy: 'startTime',
+        singleEvents: true,
+        timeMax: dateFns.formatISO(tomorrow),
+        timeMin: dateFns.formatISO(now),
       }, handleCalendarResponse);
     });
   }
 
   async getCalendarItems({ token, maxResults, calendarIds }) {
     const calendarPromises = calendarIds.map(calendarId => {
-      return this.getItemsForCalendar({ token, maxResults, calendarId });
+      return this.getItemsForCalendar({ calendarId, maxResults, token });
     });
     const calendarResults = await Promise.all(calendarPromises);
     return calendarResults.flat(1).sort(this.sortByDate);
