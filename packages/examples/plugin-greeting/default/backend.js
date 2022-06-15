@@ -6,13 +6,14 @@ const getGreeting = () => {
   return 'Good night';
 };
 
+/** @type {import('./types').BackendFunctions} */
 module.exports = {
   init() {
     console.log('Plugin init');
     return { greeting: getGreeting() };
   },
   update() {
-    console.log(`The 'update' method has been triggered for the example plugin.`);
+    console.log('The \'update\' method has been triggered for the example plugin.');
     return { greeting: getGreeting() };
-  }
-}
+  },
+};
