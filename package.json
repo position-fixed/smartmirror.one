@@ -5,9 +5,10 @@
     "packages/google-calendar-connector",
     "packages/ov-info",
     "packages/waze-route-calculator",
+    "plugins/plugin-dad-joke",
+    "plugins/plugin-greeting",
     "packages/frontend",
-    "packages/backend",
-    "packages/examples"
+    "packages/backend"
   ],
   "scripts": {
     "lint": "npm run lint --workspaces --if-present",
