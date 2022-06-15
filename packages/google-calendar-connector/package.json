@@ -1,0 +1,13 @@
+{
+  "name": "@smartmirror.one/google-calendar-connector",
+  "main": "gcalendar-connector.js",
+  "scripts": {
+    "example": "node example.js"
+  },
+  "license": "CC-BY-4.0",
+  "dependencies": {
+    "date-fns": "^2.16.0",
+    "dotenv": "^8.2.0",
+    "googleapis": "39"
+  }
+}

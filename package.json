@@ -2,6 +2,9 @@
   "name": "smartmirror.one",
   "workspaces": [
     "packages/types",
+    "packages/google-calendar-connector",
+    "packages/ov-info",
+    "packages/waze-route-calculator",
     "packages/frontend",
     "packages/backend",
     "packages/examples"
