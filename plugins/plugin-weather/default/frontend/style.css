@@ -1,0 +1,95 @@
+.weather {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.weather__icon {
+  flex: 40%;
+  display: grid;
+  place-content: center;
+}
+
+.weather__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.weather__info {
+  flex: 60%;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.weather__description {
+  flex: 100%;
+  margin: 0 0 0.25em;
+  font-size: 2em;
+}
+
+.weather__temp small {
+  margin: 0 0 0 0.25em;
+  font-size: 0.5em;
+  transform: translateY(-0.5em);
+}
+
+.weather__temp,
+.weather__humidity {
+  flex: 1 0 50%;
+  display: flex;
+  margin: 0.25em 0 0;
+  font-size: 2em;
+  line-height: 2em;
+  align-items: center;
+}
+
+.weather__temp svg,
+.weather__humidity svg {
+  height: 1.5em;
+}
+
+.wi {
+  display: inline-block;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  fill: currentColor;
+}
+
+.wi-fw {
+  text-align: center;
+  width: 1.4em;
+}
+
+.wi-rotate-90 {
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.wi-rotate-180 {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.wi-rotate-270 {
+  -webkit-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+
+.wi-flip-horizontal {
+  -webkit-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(-1, 1);
+}
+
+.wi-flip-vertical {
+  -webkit-transform: scale(1, -1);
+  -ms-transform: scale(1, -1);
+  transform: scale(1, -1);
+}
