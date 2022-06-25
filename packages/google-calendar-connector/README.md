@@ -16,8 +16,44 @@ It's a simple wrapper around Google's [Maps API Example for NodeJS](https://deve
     CLIENT_SECRET=SecretFromCredentialsFile
     ``` 
    - If you opt for different env-variable names, make sure to update them in the example as well.
-1. Check out `example.js` on how you can now use the different methods of the `gCalendarConnector` class.
-1. Create your own project and continue from there.
+1. Generate a URL to connect a Google User's account to your "app"
+   - ```js
+     const authUrl = _connector.generateAuthUrl();
+     console.log(authUrl);
+     ```
+   - When you visit this URL you will be returned to your localhost. Make sure to grab the authCode from the queryparams.  It should start with `4/`, you might need to use decodeURIcomponent.
+1. Swap the authCode for a reusable token
+   - ```js
+     (async () => {
+       try {
+         const token = await _connector.getTokenFromAuthCode('4/SuperLongGoogleAuthCodeGoesHere');
+         console.log(token);
+       } catch (e) {
+         console.error(e);
+       }
+     })()
+     ```
+   - Make sure to store this token somewhere safe, you will need it later.
+   - Never check your tokens into git history!
+1. Use the token from step 2 to grab your info!
+   ```js
+   (async () => {
+     try {
+       const items = await _connector.getCalendarItems({
+         calendarIds: [
+           'lorem-ipsum-1@group.calendar.google.com', // Grab this from your calendar's "settings" page
+           'default', // Or just use default
+           'nl.dutch#holiday@group.v.calendar.google.com' // You can also use Google's holiday calendars
+         ],
+         token,
+         maxResults: 50,
+       });
+       console.log(JSON.stringify(items, null, 2));
+     } catch(e) {
+       console.error(e);
+     }
+   )()
+   ```
 
 ## Can I use this implementation to do something different...
 Sure. This wrapper is delivered on the [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
