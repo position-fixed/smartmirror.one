@@ -6,7 +6,7 @@ const getGreeting = () => {
   return 'Good night';
 };
 
-/** @type {import('./types').BackendFunctions} */
+/** @type {import('../types').BackendFunctions} */
 module.exports = {
   init() {
     console.log('Plugin init');

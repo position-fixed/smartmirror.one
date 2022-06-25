@@ -6,8 +6,14 @@
 */
 
 /**
+ * @typedef {object} BackendContext
+ * @property {Object.<string, unknown>} data
+ * @property {Object.<string, unknown>} inputs
+ */
+
+/**
  * @callback BackendFn
- * @param {Object.<string, unknown>} data
+ * @param {BackendContext} context
  * @returns {(Object.<string, unknown>|Promise)}
  */
 

@@ -24,7 +24,7 @@ function getJoke() {
   });
 }
 
-/** @type {import('./types').BackendFunctions} */
+/** @type {import('../types').BackendFunctions} */
 module.exports = {
   async init() {
     console.log('Dad Joke init');

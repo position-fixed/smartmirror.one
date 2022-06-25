@@ -12,6 +12,6 @@ const updateClockWidth = (clock) => {
   }
 };
 
-/** @type {import('../../types').FrontendContext} */
+/** @type {import('../../../types').FrontendContext} */
 const { elements } = context;
 updateClockWidth(elements['clock']);

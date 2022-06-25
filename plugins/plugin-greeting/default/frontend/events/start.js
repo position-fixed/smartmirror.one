@@ -1,5 +1,5 @@
 /* global context:readonly */
-/** @type {import('../../types').FrontendContext} */
+/** @type {import('../../../types').FrontendContext} */
 console.log('Plugin Start');
 
 const { elements, inputs, data } = context;
