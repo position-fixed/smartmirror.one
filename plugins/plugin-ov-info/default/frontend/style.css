@@ -1,0 +1,85 @@
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0;
+  }
+  5%, 95% {
+    opacity: 1;
+  }
+}
+
+
+.transport {
+  position: relative;
+}
+
+.transport__item {
+  --duration: calc(60 / var(--total) * 1s);
+  --offset: calc(var(--duration) * var(--index));
+  animation-duration: var(--duration);
+  animation-delay: var(--offset);
+  animation-fill-mode: both;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.transport__item.animated {
+  animation-name: fadeInOut;
+}
+
+.transport__heading {
+  margin: 0 0 0.5em 0;
+  font-size: 1.5em;
+  font-weight: bold;
+  line-height: 2;
+}
+
+.transport__line {
+  display: flex;
+  margin: 0 0 1ch 0;
+}
+
+.transport__line > p {
+  flex: 1 0 auto;
+  text-align: center;
+  display: block;
+  width: 1.75em;
+  height: 1.75em;
+  margin: 0;
+  line-height: 1.75em;
+  border-radius: 100%;
+  background-color: var(--fg);
+  color: var(--bg);
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.transport__line svg {
+  flex: 1 0 auto;
+  margin: 0 0.25em 0 0;
+  height: 1.75em;
+  width: auto;
+  fill: currentColor;
+}
+
+.transport__line__info {
+  flex: 1 1 100%;
+  margin: 0 1em 0 1ch;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.transport p {
+  margin: 0 0 1em;
+}
+
+.transport__line__info p:first-of-type {
+  flex: 1 0 100%;
+  font-weight: bold;
+}
+
+.transport__line__info p:not(:first-of-type) {
+  margin-right: 1ch;
+}

@@ -1,19 +1,34 @@
-const Axios = require('axios');
-const dateFns = require('date-fns');
+const { get } = require('https');
 
 class OvInfo {
-  ovApi;
+  userAgent;
+  timeZoneOffset;
 
-  constructor() {
-    this.ovApi =  Axios.create({
-      baseURL: 'https://v0.ovapi.nl/',
-      headers: {
-        'User-Agent': 'Thank you for the exellent data! - Used by https://smartmirror.one',
-      },
-    });
+  constructor({ widgetId, timeZoneOffset }) {
+    this.userAgent = `Smartmirror Widget ${widgetId}`;
+    this.timeZoneOffset = timeZoneOffset;
   }
 
-
+  ovRequest(path) {
+    return new Promise((resolve, reject) => {
+      const reqOptions = {
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': this.userAgent,
+        },
+        hostname: 'v0.ovapi.nl',
+        path,
+      };
+      get(reqOptions, (response) => {
+        const data = [];
+        response.on('data', (chunk) => data.push(chunk));
+        response.on('close', () => {
+          const result = JSON.parse(Buffer.concat(data).toString());
+          resolve(result);
+        });
+      }).on('error', (err) => reject(err));
+    });
+  }
 
   calculateDistance({
     originLatitude,
@@ -53,9 +68,9 @@ class OvInfo {
     return distance;
   }
 
-  async getLocationIds({ maxDistance, latitude, longitude }) {
-    const stopCodesCall = await this.ovApi.get('/stopareacode');
-    const stopCodes = stopCodesCall.data;
+  async getLocationIds({ maxDistanceInMeters, latitude, longitude }) {
+    const stopCodes = await this.ovRequest('/stopareacode');
+    const maxDistanceInKm = maxDistanceInMeters / 1000;
 
     const codes = Object.keys(stopCodes)
       .map(code => {
@@ -67,7 +82,7 @@ class OvInfo {
           originLongitude: longitude,
         });
 
-        if (dist < maxDistance) {
+        if (dist < maxDistanceInKm) {
           return stop.StopAreaCode;
         }
       });
@@ -75,16 +90,18 @@ class OvInfo {
     return codes.filter((i) => i);
   }
 
-  async getDeparturesForLocations({ maxTime, locations }) {
-    const departuresDataCall = await this.ovApi.get(`/stopareacode/${locations.join(',')}/departures`);
-    const departuresData = departuresDataCall.data;
+  async getDeparturesForLocations({ maxTimeInMinutes, locations }) {
+    const departuresData = await this.ovRequest(`/stopareacode/${locations.join(',')}/departures`);
 
     const departuresList = Object.keys(departuresData)
       .flatMap((departureId) => {
         const transitData = departuresData[departureId];
         const transitLines = Object.keys(transitData).map((line) => transitData[line]);
         return transitLines
-          .flatMap((line) => this.parseTransitLine({ line, maxTime }))
+          .flatMap((line) => this.parseTransitLine({
+            line,
+            maxTime: maxTimeInMinutes * 60 * 1000,
+          }))
           .filter((l) => l);
       });
 
@@ -141,16 +158,20 @@ class OvInfo {
   }
 
   parsePassingTransit({ location, passingTransit, maxTime }) {
-    const expectedDeparture = dateFns.parseISO(passingTransit.ExpectedDepartureTime);
-    const targetDeparture = dateFns.parseISO(passingTransit.TargetDepartureTime);
-    const late = dateFns.differenceInMinutes(expectedDeparture, targetDeparture);
-    const distanceInMs = Math.abs(dateFns.differenceInMilliseconds(new Date(), expectedDeparture));
+    const expectedDeparture = new Date(passingTransit.ExpectedDepartureTime);
+    const targetDeparture = new Date(passingTransit.TargetDepartureTime);
+    const late = parseInt(
+      Math.abs(targetDeparture.getTime() - expectedDeparture.getTime()) / (1000 * 60) % 60,
+    );
+
+    const currentTime = (new Date()).getTime() + (60 * 60 * 1000 * this.timeZoneOffset);
+    const distanceInMs = expectedDeparture.getTime() - currentTime;
     const inSelectedTimeSlot = distanceInMs <= maxTime;
 
     if (passingTransit.TripStopStatus !== 'PASSED' && inSelectedTimeSlot) {
       const thisTransitPass = {
         departures: [{
-          time: dateFns.format(expectedDeparture, 'HH:mm'),
+          time: this.dateToHumanTime(expectedDeparture),
           late,
         }],
         location,
@@ -161,6 +182,12 @@ class OvInfo {
 
       return thisTransitPass;
     }
+  }
+
+  dateToHumanTime(date) {
+    const hours = date.getHours();
+    const mins = date.getMinutes();
+    return `${hours < 10 ? `0${hours}` : hours}:${mins < 10 ? `0${mins}` : mins}`;
   }
 
   sortOnTime(firstTimeString, secondTimeString) {

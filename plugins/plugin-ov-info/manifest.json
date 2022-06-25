@@ -1,0 +1,28 @@
+{
+  "name": "plugin-ov-info",
+  "author": "A Plugin Author",
+  "email": "plugins@smartmirror.one",
+  "widgets": {
+    "default": {
+      "refreshRate": "5m",
+      "html": ["index.html"],
+      "css": ["style.css"],
+      "variables": [{
+        "name": "latitude",
+        "type": "number"
+      }, {
+        "name": "longitude",
+        "type": "number"
+      }, {
+        "name": "maxDistanceInMeters",
+        "type": "number"
+      }, {
+        "name": "maxTimeInMinutes",
+        "type": "number"
+      }, {
+        "name": "timeZoneOffset",
+        "type": "number"
+      }]
+    }
+  }
+}
