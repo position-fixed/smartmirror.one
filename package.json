@@ -2,11 +2,6 @@
   "name": "smartmirror.one",
   "workspaces": [
     "packages/types",
-    "packages/waze-route-calculator",
-    "plugins/plugin-dad-joke",
-    "plugins/plugin-greeting",
-    "plugins/plugin-ov-info",
-    "plugins/plugin-weather",
     "packages/docker-test",
     "packages/frontend",
     "packages/backend"
