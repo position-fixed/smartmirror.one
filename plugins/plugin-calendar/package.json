@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "google-calendar-connector": "https://github.com/position-fixed/google-calendar-connector"
+    "google-calendar-connector": "https://github.com/smartmirror-one/google-calendar-connector"
   }
 }
