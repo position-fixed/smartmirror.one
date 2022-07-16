@@ -74,7 +74,7 @@ class _WidgetWrapper extends LitElement {
 
   render() {
     return html`
-    <div .innerHTML=${[
+    <div style="min-height: 100%;" .innerHTML=${[
     ...this.css.map(style => `<style>${style}</style>`),
     ...this.html,
   ].join('')}>

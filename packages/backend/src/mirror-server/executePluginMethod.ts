@@ -19,7 +19,10 @@ export const executePluginMethod = async ({
     const [ plugin, widget ] = widgetConfig.widget.split('.');
     const methods = config.plugins.find(p => p.name === plugin)?.widgets[widget].backend;
     if (methods && Object.prototype.hasOwnProperty.call(methods, methodName)) {
-      const result = await methods[methodName](data);
+      const result = await methods[methodName]({
+        data,
+        inputs: widgetConfig.inputs,
+      });
       return result;
     }
   }

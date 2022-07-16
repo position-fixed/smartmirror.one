@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "start": "docker-compose up",
+    "clean": "docker rm $(docker ps -aq) && docker rmi $(docker images -aq)",
+    "reset:config": "rm config/config.yml"
+  }
+}

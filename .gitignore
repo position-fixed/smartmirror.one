@@ -9,7 +9,7 @@ node_modules
 .parcel-cache
 _public
 _bins
-_example
+_staging
 coverage
 junit.xml
 dist

@@ -1,0 +1,19 @@
+{
+  "name": "plugin-clock",
+  "author": "A Plugin Author",
+  "email": "plugins@smartmirror.one",
+  "widgets": {
+    "analog": {
+      "refreshRate": "1s",
+      "html": ["index.html"],
+      "css": ["style.css"],
+      "variables": []
+    },
+    "digital": {
+      "refreshRate": "1s",
+      "html": ["index.html"],
+      "css": ["style.css"],
+      "variables": []
+    }
+  }
+}

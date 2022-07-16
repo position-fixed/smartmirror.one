@@ -1,0 +1,19 @@
+{
+  "name": "plugin-waze",
+  "author": "A Plugin Author",
+  "email": "plugins@smartmirror.one",
+  "widgets": {
+    "default": {
+      "refreshRate": "5m",
+      "html": ["index.html", "svg-sprite.html"],
+      "css": ["style.css"],
+      "variables": [{
+        "name": "origin",
+        "type": "string"
+      }, {
+        "name": "destination",
+        "type": "string"
+      }]
+    }
+  }
+}

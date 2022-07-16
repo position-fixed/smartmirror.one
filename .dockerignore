@@ -4,6 +4,6 @@
 .vscode
 node_modules
 packages/backend/_public
-packages/backend/_example
+packages/backend/_staging
 packages/backend/_bins
 packages/backend/_dist

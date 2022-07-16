@@ -2,9 +2,9 @@
   "name": "smartmirror.one",
   "workspaces": [
     "packages/types",
+    "packages/docker-test",
     "packages/frontend",
-    "packages/backend",
-    "packages/examples"
+    "packages/backend"
   ],
   "scripts": {
     "lint": "npm run lint --workspaces --if-present",

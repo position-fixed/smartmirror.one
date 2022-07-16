@@ -1,0 +1,61 @@
+.calendar {
+  justify-content: start;
+  text-align: left;
+  padding: 0 0.5em;
+}
+
+.calendar__item {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 0.5em;
+  font-size: 3.2em;
+  line-height: 1.5;
+}
+
+.calendar__icon {
+  flex: 0 0 auto;
+  margin: 0 0.5em 0 0;
+  position: relative;
+  font-size: 150%;
+  line-height: 1;
+}
+
+.calendar__icon svg {
+  width: auto;
+  height: 1.2em;
+  fill: currentColor;
+}
+
+.calendar__icon::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: inline-block;
+  width: 100%;
+  font-family: var(--font);
+  font-size: 50%;
+  line-height: 2.7;
+  text-align: center;
+  color: var(--bgColor);
+  content: attr(data-date);
+}
+
+.calendar__icon.filled::after {
+  line-height: 2.5;
+  color: var(--fgColor);
+}
+
+.calendar__name {
+  flex: 1 1 auto;
+  text-align: right;
+}
+
+.calendar__time {
+  flex: 0 0 100%;
+}
+
+.calendar__summary {
+  flex: 0 0 100%;
+  margin: 0.25em 0 0.8em;
+}

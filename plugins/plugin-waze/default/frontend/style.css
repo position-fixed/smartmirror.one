@@ -1,0 +1,48 @@
+.waze {
+  display: flex;
+  align-items: center;
+}
+
+.waze svg {
+  color: var(--fg);
+  fill: currentColor;
+}
+
+.waze__icon {
+  flex-basis: 40%;
+  font-size: 4em;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.waze__icon > svg {
+  height: 4.5rem;
+  max-height: 100%;
+}
+
+.waze__info {
+  display: flex;
+  padding: 0 0 0 1rem;
+  flex-direction: column;
+  flex-basis: 60%;
+  font-size: 1.5em;
+  line-height: 1.25;
+}
+
+.waze__info__item:not(:last-of-type) {
+  margin-bottom: 1rem;
+}
+
+.waze__info__item {
+  display: flex;
+  align-items: center;
+}
+
+.waze__info__item > svg {
+  max-height: 2rem;
+  margin: 0 1rem 0 0;
+}
+
+.waze__info__item > p {
+  margin: 0;
+}

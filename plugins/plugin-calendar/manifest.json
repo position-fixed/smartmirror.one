@@ -1,0 +1,28 @@
+{
+  "name": "plugin-calendar",
+  "author": "A Plugin Author",
+  "email": "plugins@smartmirror.one",
+  "widgets": {
+    "default": {
+      "refreshRate": "5m",
+      "html": ["index.html"],
+      "css": ["style.css"],
+      "variables": [{
+        "name": "clientId",
+        "type": "string"
+      }, {
+        "name": "clientSecret",
+        "type": "string"
+      }, {
+        "name": "returnUrl",
+        "type": "string"
+      }, {
+        "name": "calendarIds",
+        "type": "string"
+      }, {
+        "name": "token",
+        "type": "string"
+      }]
+    }
+  }
+}
