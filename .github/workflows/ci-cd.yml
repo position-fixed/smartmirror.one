@@ -11,6 +11,8 @@ jobs:
   lint-test-build:
     name: Lint, Test and Build
     runs-on: ubuntu-latest
+    outputs:
+      packageVersion: ${{ steps.gitversion.outputs.semVer }}
 
     steps:
     - uses: actions/checkout@v3
@@ -73,6 +75,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
+    env:
+      PACKAGE_VERSION: ${{ needs.lint-test-build.outputs.packageVersion }}
 
     steps:
     - uses: actions/checkout@v3
