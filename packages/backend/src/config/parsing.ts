@@ -92,10 +92,9 @@ export const widgetFilter = ({
   item,
   plugins,
 }: WidgetFilterProps): boolean => {
-  const [ plugin, widget ] = item.widget.split('.');
-  const foundPlugin = plugins.find(p => p.name === plugin);
+  const foundPlugin = plugins.find(p => p.name === item.plugin);
   if (foundPlugin) {
-    const expectedVars = foundPlugin.widgets[widget].variables || [];
+    const expectedVars = foundPlugin.widgets[item.widget].variables || [];
     const varsValid = expectedVars.length > 0
       ? expectedVars.some(variable => {
         return Object.prototype.hasOwnProperty.call(item.inputs, variable.name)
@@ -154,6 +153,5 @@ export const parseConfig = async (contentLocation: string): Promise<ParseConfigR
 };
 
 export const dedupeWidgets = (list: string[], item: WidgetConfig) => {
-  const plugin = item.widget.split('.')[0];
-  return list.includes(plugin) ? list : [ ...list, plugin ];
+  return list.includes(item.plugin) ? list : [ ...list, item.plugin ];
 };

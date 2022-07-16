@@ -8,11 +8,12 @@ export const defaultWidget: Omit<WidgetConfig, 'data'> = {
   inputs: {
     displayName: 'there',
   },
+  plugin: DEFAULT_PLUGIN,
   position: {
     height: 2,
     left: 5,
     top: 5,
     width: 10,
   },
-  widget: `${DEFAULT_PLUGIN}.default`,
+  widget: 'default',
 };

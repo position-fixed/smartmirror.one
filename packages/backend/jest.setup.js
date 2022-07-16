@@ -2,36 +2,37 @@ globalThis.getConfig = ({
   backend = {},
   frontend = {},
 }) => ({
-  port: 3000,
-  rootFolder: '',
   boardSetup: {
-    width: 10,
     height: 10,
     testMode: false,
+    width: 10,
   },
-  widgets: [{
-    id: 'example-widget',
-    widget: 'plugin.widget',
-    position: {
-      top: 0,
-      left: 0,
-      width: 10,
-      height: 10,
-    },
-    inputs: {},
-  }],
   plugins: [{
-    name: 'plugin',
     author: '',
     email: '',
+    name: 'plugin',
     widgets: {
       widget: {
-        html: [],
+        backend,
         css: [],
         frontend,
-        backend,
+        html: [],
         variables: [],
       },
     },
+  }],
+  port: 3000,
+  rootFolder: '',
+  widgets: [{
+    id: 'example-widget',
+    inputs: {},
+    plugin: 'plugin',
+    position: {
+      height: 10,
+      left: 0,
+      top: 0,
+      width: 10,
+    },
+    widget: 'widget',
   }],
 });

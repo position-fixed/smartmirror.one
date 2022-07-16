@@ -41,6 +41,7 @@ export type PluginDefinition = {
 };
 
 export type WidgetConfig = {
+  plugin: string;
   widget: string;
   id: string;
   refreshRate?: string | number;

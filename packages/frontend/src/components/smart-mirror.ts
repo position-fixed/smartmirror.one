@@ -83,7 +83,7 @@ export class SmartMirror extends LitElement {
       'grid-row': `${widgetConfig.position.top} / span ${widgetConfig.position.height}`,
     });
 
-    const [ reqPlugin, reqWidget ] = widgetConfig.widget.split('.');
+    const { plugin: reqPlugin, widget: reqWidget } = widgetConfig;
     const pluginDef = this.plugins.find(
       p => p.name === reqPlugin && Object.prototype.hasOwnProperty.call(p.widgets, reqWidget),
     );
