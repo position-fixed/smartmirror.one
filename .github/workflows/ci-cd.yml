@@ -14,12 +14,29 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
     - name: Setup Node.js Dependencies
       uses: actions/setup-node@v3
       with:
         node-version: 16.x
         cache: npm
+
+    - name: Setup GitVersion
+      if: github.event_name != 'pull_request'
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+        versionSpec: '5.x'
+
+    - name: Determine New Package Version
+      if: github.event_name != 'pull_request'
+      uses: gittools/actions/gitversion/execute@v0.9.7
+      id: gitversion
+
+    - name: Replace Package Version
+      if: github.event_name != 'pull_request'
+      run: sed -s -i "s/0.1.0-gitversion/${{ steps.gitversion.outputs.semVer }}/g" package.json
 
     - name: Install Project Dependencies
       run: npm ci
