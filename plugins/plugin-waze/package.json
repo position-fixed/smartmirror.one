@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "waze-route-calculator": "https://github.com/smartmirror-one/waze-route-calculator"
+  }
+}
