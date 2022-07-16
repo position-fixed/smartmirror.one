@@ -1,5 +1,6 @@
 {
   "name": "smartmirror.one",
+  "version": "0.1.0-gitversion",
   "workspaces": [
     "packages/types",
     "packages/docker-test",
