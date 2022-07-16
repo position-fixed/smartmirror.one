@@ -99,12 +99,6 @@ async function getWeather({ apiKey, cityId }) {
 
 /** @type {import('../types').BackendFunctions} */
 module.exports = {
-  async init({ inputs }) {
-    return { weather: await getWeather({
-      apiKey: inputs.apiKey,
-      cityId: inputs.cityId,
-    }) };
-  },
   async update({ inputs }) {
     return { weather: await getWeather({
       apiKey: inputs.apiKey,

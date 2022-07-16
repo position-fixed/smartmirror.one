@@ -26,12 +26,7 @@ function getJoke() {
 
 /** @type {import('../types').BackendFunctions} */
 module.exports = {
-  async init() {
-    console.log('Dad Joke init');
-    return { joke: await getJoke() };
-  },
   async update() {
-    console.log('The \'update\' method has been triggered for the dad-joke plugin.');
     return { joke: await getJoke() };
   },
 };

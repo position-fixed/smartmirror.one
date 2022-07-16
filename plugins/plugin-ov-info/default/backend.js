@@ -23,10 +23,6 @@ async function getOvInfo(inputs) {
 
 /** @type {import('../types').BackendFunctions} */
 module.exports = {
-  async init({ inputs }) {
-    const info = await getOvInfo(inputs);
-    return { transportHTML: renderTransport(info) };
-  },
   async update({ inputs }) {
     const info = await getOvInfo(inputs);
     return { transportHTML: renderTransport(info) };

@@ -9,9 +9,6 @@ const getAnalogTimeVars = () => {
 
 /** @type {import('../types').BackendFunctions} */
 module.exports = {
-  init() {
-    return { styles: getAnalogTimeVars() };
-  },
   update() {
     return { styles: getAnalogTimeVars() };
   },

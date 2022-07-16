@@ -21,7 +21,8 @@ class _WidgetWrapper extends LitElement {
   }
 
   protected async firstUpdated(): Promise<void> {
-    this.executeFunction('start');
+    const hasDedicatedInit = Object.prototype.hasOwnProperty.call(this.js, 'start');
+    this.executeFunction(hasDedicatedInit ? 'start' : 'update');
     if (this.refreshRate) {
       this.interval = window.setInterval(
         () => this.requestWidgetMethod('update'),

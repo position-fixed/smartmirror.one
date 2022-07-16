@@ -22,10 +22,6 @@ async function getCalendarItems(inputs) {
 
 /** @type {import('../types').BackendFunctions} */
 module.exports = {
-  async init({ inputs }) {
-    console.log('Init');
-    return { calendarItems: await getCalendarItems(inputs) };
-  },
   async update({ inputs }) {
     console.log('Update');
     return { calendarItems: await getCalendarItems(inputs) };

@@ -19,13 +19,25 @@ export const startMirrorServer = async (config: Config) => {
   });
 
   for (const widget of config.widgets) {
-    const data = await executePluginMethod({
+    let widgetData = null;
+
+    widgetData = await executePluginMethod({
       config,
       data: {},
       methodName: 'init',
       widgetId: widget.id,
     });
-    widget.data = data || {};
+
+    if (widgetData === null) {
+      widgetData = await executePluginMethod({
+        config,
+        data: {},
+        methodName: 'update',
+        widgetId: widget.id,
+      });
+    }
+
+    widget.data = widgetData || {};
   }
 
   const socketServer = new WebSocketServer({ server: httpServer });
