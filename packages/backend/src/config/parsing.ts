@@ -28,7 +28,7 @@ export const collectPluginFiles = async ({
   const plugins: PluginDefinition[] = [];
 
   for (const pluginRef of pluginReferences) {
-    const pluginFolder = join(rootFolder, pluginRef);
+    const pluginFolder = join(rootFolder, 'plugins', pluginRef);
     const manifestContents = await getFileContents({
       rootFolder: pluginFolder,
       filenames: [ 'manifest.json' ],

@@ -8,10 +8,4 @@ services:
       - "3000:3000"
     volumes:
       - ./config:/root/.smartmirror
-      - ../../plugins/plugin-calendar:/root/.smartmirror/plugin-calendar
-      - ../../plugins/plugin-clock:/root/.smartmirror/plugin-clock
-      - ../../plugins/plugin-dad-joke:/root/.smartmirror/plugin-dad-joke
-      - ../../plugins/plugin-greeting:/root/.smartmirror/plugin-greeting
-      - ../../plugins/plugin-ov-info:/root/.smartmirror/plugin-ov-info
-      - ../../plugins/plugin-waze:/root/.smartmirror/plugin-waze
-      - ../../plugins/plugin-weather:/root/.smartmirror/plugin-weather
+      - ../../plugins:/root/.smartmirror/plugins
