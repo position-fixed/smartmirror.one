@@ -26,7 +26,7 @@ export class SmartMirror extends LitElement {
       display: block;
       width: 100%;
       height: 100%;
-      font-family: sans-serif;
+      font-family: var(--font-sans);
       color: var(--fg);
       background-color: var(--bg);
     }
