@@ -1,5 +1,5 @@
+import { css, html, LitElement } from 'lit';
 import { customElement, property, queryAll } from 'lit/decorators.js';
-import { html, LitElement } from 'lit';
 
 @customElement('widget-wrapper')
 class _WidgetWrapper extends LitElement {
@@ -19,6 +19,25 @@ class _WidgetWrapper extends LitElement {
     window.addEventListener('widgetUpdate', (ev: CustomEvent) => this.onWidgetUpdate(ev));
     super.connectedCallback();
   }
+
+  static styles = css`
+    h1, h2, h3, h4, h5, h6 {
+      margin: unset;
+      font-weight: inherit;
+    }
+    /*
+      Based on Major Third scaling.
+      We're using calc() because we set --base in <smart-mirror>
+    */
+    h1 { font-size: calc(var(--base) * 1.25 * 1.25 * 1.25 * 1.25); }
+    h2 { font-size: calc(var(--base) * 1.25 * 1.25 * 1.25 * 1.25); }
+    h3 { font-size: calc(var(--base) * 1.25 * 1.25 * 1.25); }
+    h4 { font-size: calc(var(--base) * 1.25 * 1.25); }
+    h5 { font-size: calc(var(--base) * 1.25); }
+    h6 { font-size: var(--base); }
+    p { font-size: var(--base); }
+    small { font-size: calc(var(--base) / 1.25); }
+  `;
 
   protected async firstUpdated(): Promise<void> {
     const hasDedicatedInit = Object.prototype.hasOwnProperty.call(this.js, 'start');

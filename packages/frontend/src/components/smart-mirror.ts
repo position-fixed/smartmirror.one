@@ -23,8 +23,6 @@ export class SmartMirror extends LitElement {
   static styles = [
     css`
     :host {
-      --fg: hsl(0, 0%, 100%);
-      --bg: hsl(0, 0%, 0%);
       display: block;
       width: 100%;
       height: 100%;
@@ -76,6 +74,14 @@ export class SmartMirror extends LitElement {
     this.plugins = [ ...payload.plugins ];
   }
 
+  calculateFontSizeBase() {
+    const landscape = window.innerWidth >= window.innerHeight;
+    const length = landscape ? window.innerHeight : window.innerWidth;
+    /* 32.5 just "felt good". We can play around with this if we get feedback */
+    const ratio = Math.floor(length / 32.5);
+    return { '--base': `${ratio}px` };
+  }
+
   renderWidget(widgetConfig: WidgetConfig) {
     const styles = styleMap({
       border: this.boardSetup.testMode ? '1px solid var(--fg)' : null,
@@ -108,8 +114,9 @@ export class SmartMirror extends LitElement {
 
   render() {
     const stageStyle = styleMap({
-      '--width': this.boardSetup ? this.boardSetup.width.toString() : '',
       '--height': this.boardSetup ? this.boardSetup.height.toString() : '',
+      '--width': this.boardSetup ? this.boardSetup.width.toString() : '',
+      ...this.calculateFontSizeBase(),
     });
     return html`
       <div class="stage" style=${stageStyle}>
