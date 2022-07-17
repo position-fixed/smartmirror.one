@@ -23,6 +23,12 @@ const getIcon = (filled) => {
       </svg>`;
 };
 
+const removeElements = (parent) => {
+  while (parent.lastChild) {
+    parent.removeChild(parent.lastChild);
+  }
+};
+
 const createElements = ({ container, calendarEvents }) => {
   calendarEvents.forEach(calendarEvent => {
     const startDate = new Date(calendarEvent.start);
@@ -62,6 +68,9 @@ const createElements = ({ container, calendarEvents }) => {
   });
 };
 
+// Old stuff out
+removeElements(elements['calendarContainer']);
+// New stuff in
 createElements({
   container: elements['calendarContainer'],
   calendarEvents: data.calendarItems,
