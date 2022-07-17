@@ -1,4 +1,6 @@
 .weather {
+  --heading-text-size: var(--font-size-h4);
+  --info-text-size: var(--font-size-h4);
   width: 100%;
   height: 100%;
   display: flex;
@@ -24,29 +26,30 @@
 
 .weather__description {
   flex: 100%;
-  margin: 0 0 0.25em;
-  font-size: 2em;
+  margin: 0 0 var(--base);
+  font-size: var(--heading-text-size);
 }
 
 .weather__temp small {
-  margin: 0 0 0 0.25em;
-  font-size: 0.5em;
-  transform: translateY(-0.5em);
+  --small: calc(var(--info-text-size) / 1.5);
+  margin: 0 0 0 0.25rem;
+  font-size: var(--small);
+  transform: translateY(calc(-1 * (var(--info-text-size) - var(--small))));
 }
 
 .weather__temp,
 .weather__humidity {
   flex: 1 0 50%;
   display: flex;
-  margin: 0.25em 0 0;
-  font-size: 2em;
-  line-height: 2em;
+  margin: 0.25rem 0 0;
+  font-size: var(--info-text-size);
+  line-height: var(--info-text-size);
   align-items: center;
 }
 
 .weather__temp svg,
 .weather__humidity svg {
-  height: 1.5em;
+  height: calc(var(--info-text-size) - 0.5rem);
 }
 
 .wi {

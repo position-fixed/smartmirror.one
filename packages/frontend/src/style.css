@@ -9,3 +9,14 @@ body {
   width: 100vw;
   height: 100vh;
 }
+
+:root {
+  --fg: hsl(0, 0%, 100%);
+  --bg: hsl(0, 0%, 0%);
+  --base: 16px;
+  --font-sans: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+  --font-serif: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  --font-mono: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+  font-size: var(--base);
+  font-family: var(--font-sans);
+}

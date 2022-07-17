@@ -7,9 +7,10 @@
   }
 }
 
-
 .transport {
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .transport__item {
@@ -30,8 +31,8 @@
 }
 
 .transport__heading {
-  margin: 0 0 0.5em 0;
-  font-size: 1.5em;
+  margin: 0 0 0.5rem 0;
+  font-size: var(--font-size-h5);
   font-weight: bold;
   line-height: 2;
 }
@@ -45,34 +46,34 @@
   flex: 1 0 auto;
   text-align: center;
   display: block;
-  width: 1.75em;
-  height: 1.75em;
+  width: 1.75rem;
+  height: 1.75rem;
   margin: 0;
-  line-height: 1.75em;
+  line-height: 1.75rem;
   border-radius: 100%;
   background-color: var(--fg);
   color: var(--bg);
-  font-size: 1em;
+  font-size: 1rem;
   font-weight: bold;
 }
 
 .transport__line svg {
   flex: 1 0 auto;
-  margin: 0 0.25em 0 0;
-  height: 1.75em;
+  margin: 0 0.25rem 0 0;
+  height: 1.75rem;
   width: auto;
   fill: currentColor;
 }
 
 .transport__line__info {
   flex: 1 1 100%;
-  margin: 0 1em 0 1ch;
+  margin: 0 1rem 0 1ch;
   display: flex;
   flex-wrap: wrap;
 }
 
 .transport p {
-  margin: 0 0 1em;
+  margin: 0 0 1rem;
 }
 
 .transport__line__info p:first-of-type {

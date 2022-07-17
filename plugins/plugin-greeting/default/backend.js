@@ -6,14 +6,14 @@ const getGreeting = () => {
   return 'Good night';
 };
 
+const options = [ 'doing', 'going', 'hanging', 'today' ];
+
 /** @type {import('../types').BackendFunctions} */
 module.exports = {
-  init() {
-    console.log('Plugin init');
-    return { greeting: getGreeting() };
-  },
   update() {
-    console.log('The \'update\' method has been triggered for the example plugin.');
-    return { greeting: getGreeting() };
+    return {
+      greeting: getGreeting(),
+      question: `How are you ${options[Math.floor(Math.random() * options.length)]}?`,
+    };
   },
 };

@@ -17,6 +17,7 @@ describe('standardizeWidget', () => {
   const testWidget: Omit<WidgetConfig, 'id'> = {
     data: {},
     inputs: {},
+    plugin: 'default',
     position: {
       height: 0,
       left: 0,
@@ -63,15 +64,20 @@ describe('standardizeWidget', () => {
 describe('dedupeWidgets', () => {
   it('converts multiple widget definitions into a list of used plugins', () => {
     const input: Partial<WidgetConfig>[] = [{
-      widget: 'foo.bar',
+      plugin: 'foo',
+      widget: 'bar',
     }, {
-      widget: 'foo.baz',
+      plugin: 'foo',
+      widget: 'baz',
     }, {
-      widget: 'alpha.one',
+      plugin: 'alpha',
+      widget: 'one',
     }, {
-      widget: 'alpha.two',
+      plugin: 'alpha',
+      widget: 'two',
     }, {
-      widget: 'beta.one',
+      plugin: 'beta',
+      widget: 'one',
     }];
     const expected = [ 'foo', 'alpha', 'beta' ];
     const results = (input as WidgetConfig[]).reduce(dedupeWidgets, []);
@@ -86,13 +92,14 @@ describe('widgetFilter', () => {
     inputs: {
       exampleInput: 'Hello!',
     },
+    plugin: 'foo',
     position: {
       height: 1,
       left: 0,
       top: 0,
       width: 1,
     },
-    widget: 'foo.bar',
+    widget: 'bar',
   };
 
   const examplePlugin: PluginDefinition = {
@@ -143,7 +150,8 @@ describe('widgetFilter', () => {
   it('drops widget definitions that reference unknown plugins', () => {
     const malformedWidget = {
       ...exampleWidget,
-      widget: 'bar.foo',
+      plugin: 'bar',
+      widget: 'foo',
     };
     const result = [ malformedWidget ].filter(item => widgetFilter({
       item,
@@ -177,17 +185,17 @@ describe('collectPluginFiles', () => {
   };
 
   const mockFiles = {
-    'test/plugin/foo/backend.js': '/* JS */',
-    'test/plugin/foo/frontend/events/start.js': '/* JS */',
-    'test/plugin/foo/frontend/index.html': '/* HTML */',
-    'test/plugin/foo/frontend/style.css': '/* CSS */',
-    'test/plugin/manifest.json': JSON.stringify(manifest),
+    'test/plugins/my-plugin/foo/backend.js': '/* JS */',
+    'test/plugins/my-plugin/foo/frontend/events/start.js': '/* JS */',
+    'test/plugins/my-plugin/foo/frontend/index.html': '/* HTML */',
+    'test/plugins/my-plugin/foo/frontend/style.css': '/* CSS */',
+    'test/plugins/my-plugin/manifest.json': JSON.stringify(manifest),
   };
 
   beforeAll(() => {
     require('fs/promises').__setMockFiles(mockFiles);
 
-    jest.doMock('test/plugin/foo/backend.js', () => {
+    jest.doMock('test/plugins/my-plugin/foo/backend.js', () => {
       return { beforeLoad: jest.fn() };
     }, { virtual: true });
   });
@@ -195,7 +203,7 @@ describe('collectPluginFiles', () => {
   it('collects all files referenced in the plugin manifest', async () => {
     const result = await collectPluginFiles({
       rootFolder: 'test',
-      pluginReferences: [ 'plugin' ],
+      pluginReferences: [ 'my-plugin' ],
     });
 
     const expected: PluginDefinition = {
@@ -230,7 +238,7 @@ describe('collectPluginFiles', () => {
   it('parsed refreshRate to a number', async () => {
     const result = await collectPluginFiles({
       rootFolder: 'test',
-      pluginReferences: [ 'plugin' ],
+      pluginReferences: [ 'my-plugin' ],
     });
     expect(result[0].widgets['foo'].refreshRate).toEqual(300000);
   });
@@ -287,13 +295,14 @@ describe('parseConfig', () => {
           inputs: {
             displayName: 'there',
           },
+          plugin: 'plugin-greeting',
           position: {
             height: 2,
             left: 5,
             top: 5,
             width: 10,
           },
-          widget: 'plugin-greeting.default',
+          widget: 'default',
         }],
       },
       newEnvironment: false,

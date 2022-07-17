@@ -17,12 +17,7 @@ const calculateRoute = async (inputs) => {
 
 /** @type {import('../types').BackendFunctions} */
 module.exports = {
-  async init({ inputs }) {
-    console.log('Init');
-    return { routeInfo: await calculateRoute(inputs) };
-  },
   async update({ inputs }) {
-    console.log('Update');
     return { routeInfo: await calculateRoute(inputs) };
   },
 };

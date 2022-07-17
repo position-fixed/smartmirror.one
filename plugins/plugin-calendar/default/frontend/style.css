@@ -1,20 +1,20 @@
 .calendar {
-  justify-content: start;
-  text-align: left;
-  padding: 0 0.5em;
+  width: 100%;
+  height: 100%;
+  padding: 0 0.5rem;
 }
 
 .calendar__item {
   display: flex;
   flex-wrap: wrap;
-  margin: 0 0 0.5em;
-  font-size: 3.2em;
+  margin: 0 0 0.5rem;
+  font-size: var(--font-size-h5);
   line-height: 1.5;
 }
 
 .calendar__icon {
   flex: 0 0 auto;
-  margin: 0 0.5em 0 0;
+  margin: 0 0.5rem 0 0;
   position: relative;
   font-size: 150%;
   line-height: 1;
@@ -28,7 +28,7 @@
 
 .calendar__icon::after {
   position: absolute;
-  top: 0;
+  top: 7%;
   bottom: 0;
   left: 0;
   display: inline-block;
@@ -57,5 +57,5 @@
 
 .calendar__summary {
   flex: 0 0 100%;
-  margin: 0.25em 0 0.8em;
+  margin: 0.25rem 0 0.8rem;
 }

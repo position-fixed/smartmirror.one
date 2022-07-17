@@ -14,9 +14,6 @@ const getDigitalTime = () => {
 
 /** @type {import('./types').BackendFunctions} */
 module.exports = {
-  init() {
-    return { time: getDigitalTime() };
-  },
   update() {
     return { time: getDigitalTime() };
   },
