@@ -109,7 +109,7 @@ jobs:
   release:
     name: Release Version
     runs-on: ubuntu-latest
-    needs: package
+    needs: [lint-test-build, package]
     env:
       PACKAGE_VERSION: ${{ needs.lint-test-build.outputs.packageVersion }}
     if: github.event_name != 'pull_request'
