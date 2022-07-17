@@ -53,7 +53,7 @@ const createElements = ({ container, calendarEvents }) => {
       calendarItem.appendChild(eventTime);
     }
 
-    const eventSummary = document.createElement('h4');
+    const eventSummary = document.createElement('h3');
     eventSummary.classList = [ 'calendar__summary' ];
     eventSummary.innerText = calendarEvent.summary;
     calendarItem.appendChild(eventSummary);

@@ -20,7 +20,7 @@ const getIcon = (lineType) => {
 const renderTransport = (transportInfo) => {
   const departureMap = departure => {
     const late = departure.late
-      ? `<bold>${departure.late > 0 ? '+' : ''}${departure.late}</bold>`
+      ? `<b>${departure.late > 0 ? '+' : ''}${departure.late}</b>`
       : '';
     return `<p>${departure.time}${late}</p>`;
   };

@@ -1,4 +1,5 @@
 .waze {
+  --text-size: var(--font-size-h4);
   display: flex;
   align-items: center;
 }
@@ -9,28 +10,26 @@
 }
 
 .waze__icon {
-  flex-basis: 40%;
-  font-size: 4em;
   display: flex;
+  padding: 0 var(--text-size) 0 0;
   justify-content: flex-end;
 }
 
 .waze__icon > svg {
-  height: 4.5rem;
+  height: calc((var(--text-size) * 2) + 1rem);
   max-height: 100%;
 }
 
 .waze__info {
   display: flex;
-  padding: 0 0 0 1rem;
+  flex: 1 1 100%;
   flex-direction: column;
-  flex-basis: 60%;
-  font-size: 1.5em;
+  font-size: var(--text-size);
   line-height: 1.25;
 }
 
 .waze__info__item:not(:last-of-type) {
-  margin-bottom: 1rem;
+  margin-bottom: calc(--base);
 }
 
 .waze__info__item {
@@ -39,10 +38,13 @@
 }
 
 .waze__info__item > svg {
-  max-height: 2rem;
+  width: var(--text-size);
+  height: 100%;
+  max-height: calc(var(--text-size) + 1rem);
   margin: 0 1rem 0 0;
 }
 
 .waze__info__item > p {
   margin: 0;
+  font-size: inherit;
 }

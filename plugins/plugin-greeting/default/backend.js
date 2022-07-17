@@ -6,9 +6,14 @@ const getGreeting = () => {
   return 'Good night';
 };
 
+const options = [ 'doing', 'going', 'hanging', 'today' ];
+
 /** @type {import('../types').BackendFunctions} */
 module.exports = {
   update() {
-    return { greeting: getGreeting() };
+    return {
+      greeting: getGreeting(),
+      question: `How are you ${options[Math.floor(Math.random() * options.length)]}?`,
+    };
   },
 };
