@@ -70,13 +70,13 @@ jobs:
     name: Package Binaries
     runs-on: ${{ matrix.os }}
     needs: lint-test-build
+    env:
+      PACKAGE_VERSION: ${{ needs.lint-test-build.outputs.packageVersion }}
     if: github.event_name != 'pull_request'
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
-    env:
-      PACKAGE_VERSION: ${{ needs.lint-test-build.outputs.packageVersion }}
 
     steps:
     - uses: actions/checkout@v3
@@ -110,6 +110,8 @@ jobs:
     name: Release Version
     runs-on: ubuntu-latest
     needs: package
+    env:
+      PACKAGE_VERSION: ${{ needs.lint-test-build.outputs.packageVersion }}
     if: github.event_name != 'pull_request'
     
     steps:
@@ -123,11 +125,8 @@ jobs:
       uses: meeDamian/github-release@2.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ env.PACKAGE_VERSION }}
         name: Smartmirror.one - Latest
         allow_override: true
         prerelease: true
-        tag: latest
-        files: >
-          smartmirror-one-latest-linux:releases/smartmirror1-linux
-          smartmirror-one-latest-mac:releases/smartmirror1-darwin
-          smartmirror-one-latest-windows:releases/smartmirror1-win32.exe
+        files: releases
