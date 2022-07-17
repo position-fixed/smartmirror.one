@@ -120,7 +120,6 @@ class _WidgetWrapper extends LitElement {
     ...this.css.map(style => `<style>${style}</style>`),
     ...this.html,
   ].join('')}>
-      
     </div>
     `;
   }
