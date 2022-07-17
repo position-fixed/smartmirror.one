@@ -18,7 +18,6 @@ const calculateRoute = async (inputs) => {
 /** @type {import('../types').BackendFunctions} */
 module.exports = {
   async update({ inputs }) {
-    console.log('Update');
     return { routeInfo: await calculateRoute(inputs) };
   },
 };
